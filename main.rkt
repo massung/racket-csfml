@@ -9,10 +9,6 @@ All rights reserved.
 
 |#
 
-(require ffi/unsafe)
-
-;; ----------------------------------------------------
-
 (require "enums.rkt"
          "types.rkt"
          "audio.rkt"
