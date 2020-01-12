@@ -1,29 +1,33 @@
-# CSFML Bindings for Racket
+#lang racket
 
-This is a _complete_ FFI wrapper for [CSFML 2.5][csfml]. It also consists of extra, helper functions in the same style to simplify very common code (e.g. event handling).
+#|
 
-## Quickstart Example
+This example creates a sfRenderWindow and loops forever processing
+events and rendering to the window (clearing and presenting) until
+the escape key is pressed.
 
-It's expected that you know [CSFML][csfml] and know the types, functions, etc. But, here's an example of it being used to render to a window:
+|#
 
-```racket
 (require csfml)
 
+;; recursively process all events for a window
 (define (process-events window)
   (let ([event (sfRenderWindow_pollEvent window)])
     (when event
       (case (sfEvent-type event)
         ('sfEvtKeyPressed
-          (case (sfKeyEvent-code (sfEvent-key event))
-            ('sfKeyEscape (sfRenderWindow_close window)))))
+         (case (sfKeyEvent-code (sfEvent-key event))
+           ('sfKeyEscape (sfRenderWindow_close window)))))
 
       ;; there may be more events to process
       (process-events window))))
 
+;; render the contents of the window
 (define (render window)
   (sfRenderWindow_clear window sfRed)
   (sfRenderWindow_display window))
 
+;; loop forever until the window is closed
 (define (run-loop window)
   (process-events window)
   (render window)
@@ -32,16 +36,9 @@ It's expected that you know [CSFML][csfml] and know the types, functions, etc. B
   (when (sfRenderWindow_isOpen window)
     (run-loop window)))
 
-;; create the window
+;; create the main window
 (define mode (make-sfVideoMode 640 480 32))
 (define window (sfRenderWindow_create mode "Example" '(sfDefaultStyle) #f))
 
 ;; run
 (run-loop window)
-```
-
-## Initialization Fields
-
-
-
-[csfml]: https://www.sfml-dev.org/
