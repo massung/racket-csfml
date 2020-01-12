@@ -17,4 +17,4 @@ It's expected that you know [CSFML][csfml] and know the types, functions, etc. B
 
 
 [csfml]: https://www.sfml-dev.org/
-[examples]: https://github.com/massung/racket-csfml/master/examples
+[examples]: https://github.com/massung/racket-csfml/tree/master/examples
