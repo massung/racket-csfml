@@ -6,7 +6,6 @@ Creating a shape and rendering it.
 
 |#
 
-(require racket/flonum)
 (require csfml)
 
 ;; create the main window
@@ -66,7 +65,7 @@ Creating a shape and rendering it.
              (displayln exn)
              (sfRenderWindow_close window))])
   (run-loop))
-  
+
 ;; free memory when done
 (sfRenderWindow_destroy window)
 (sfCircleShape_destroy circle)
