@@ -15,7 +15,11 @@ All rights reserved.
 
 ;; ----------------------------------------------------
 
-(define-ffi-definer define-sfml (ffi-lib "csfml-window-2"))
+(define-ffi-definer define-sfml
+  (ffi-lib (case (system-type 'os)
+             ('windows "csfml-window-2")
+             ('unix "libcsfml-window")
+             ('macos "libcsfml-window"))))
 
 ;; ----------------------------------------------------
 

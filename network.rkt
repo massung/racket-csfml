@@ -14,7 +14,11 @@ All rights reserved.
 
 ;; ----------------------------------------------------
 
-(define-ffi-definer define-sfml (ffi-lib "csfml-network-2"))
+(define-ffi-definer define-sfml
+  (ffi-lib (case (system-type 'os)
+             ('windows "csfml-network-2")
+             ('unix "libcsfml-network")
+             ('macos "libcsfml-network"))))
 
 ;; ----------------------------------------------------
 

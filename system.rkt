@@ -15,12 +15,16 @@ All rights reserved.
 
 ;; ----------------------------------------------------
 
-(require "enums.rkt")
-(require "types.rkt")
+(define-ffi-definer define-sfml
+  (ffi-lib (case (system-type 'os)
+             ('windows "csfml-system-2")
+             ('unix "libcsfml-system")
+             ('macos "libcsfml-system"))))
 
 ;; ----------------------------------------------------
 
-(define-ffi-definer define-sfml (ffi-lib "csfml-system-2"))
+(require "enums.rkt")
+(require "types.rkt")
 
 ;; ----------------------------------------------------
 

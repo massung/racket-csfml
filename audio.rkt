@@ -14,7 +14,11 @@ All rights reserved.
 
 ;; ----------------------------------------------------
 
-(define-ffi-definer define-sfml (ffi-lib "csfml-audio-2"))
+(define-ffi-definer define-sfml
+  (ffi-lib (case (system-type 'os)
+             ('windows "csfml-audio-2")
+             ('unix "libcsfml-audio")
+             ('macos "libcsfml-audio"))))
 
 ;; ----------------------------------------------------
 

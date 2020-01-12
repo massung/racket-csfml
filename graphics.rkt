@@ -14,7 +14,11 @@ All rights reserved.
 
 ;; ----------------------------------------------------
 
-(define-ffi-definer define-sfml (ffi-lib "csfml-graphics-2"))
+(define-ffi-definer define-sfml
+  (ffi-lib (case (system-type 'os)
+             ('windows "csfml-graphics-2")
+             ('unix "libcsfml-graphics")
+             ('macos "libcsfml-graphics"))))
 
 ;; ----------------------------------------------------
 
