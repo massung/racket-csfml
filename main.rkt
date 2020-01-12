@@ -36,8 +36,8 @@ All rights reserved.
 ;; ----------------------------------------------------
 
 (define (process-events window)
-  (let-values ([(event? event) (sfRenderWindow_pollEvent window)])
-    (when event?
+  (let ([event (sfRenderWindow_pollEvent window)])
+    (when event
       (case (sfEvent-type event)
         ('sfEvtKeyPressed
           (case (sfKeyEvent-code (sfEvent-key event))
@@ -47,7 +47,7 @@ All rights reserved.
       (process-events window))))
 
 (define (render window)
-  (sfRenderWindow_clear window (sfColor_fromInteger 0))
+  (sfRenderWindow_clear window sfRed)
   (sfRenderWindow_display window))
 
 (define (run-loop window)
