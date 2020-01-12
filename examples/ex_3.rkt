@@ -22,6 +22,12 @@ Creating a shape and rendering it.
 (sfCircleShape_setOutlineThickness circle 3.0)
 (sfCircleShape_setOrigin circle (make-sfVector2f 20.0 20.0))
 
+;; convert x/y integer pair to vector in view space
+(define (map-pixel x y)
+  (let ([pos (make-sfVector2i x y)]
+        [view (sfRenderWindow_getView window)])
+    (sfRenderWindow_mapPixelToCoords window pos view)))
+
 ;; move the circle to the mouse
 (define (process-events)
   (let ([event (sfRenderWindow_pollEvent window)])
@@ -29,8 +35,8 @@ Creating a shape and rendering it.
       (case (sfEvent-type event)
         ('sfEvtMouseMoved
          (let* ([move (sfEvent-mouseMove event)]
-                [pos (make-sfVector2f (->fl (sfMouseMoveEvent-x move))
-                                      (->fl (sfMouseMoveEvent-y move)))])
+                [pos (map-pixel (sfMouseMoveEvent-x move)
+                                (sfMouseMoveEvent-y move))])
            (sfCircleShape_setPosition circle pos)))
         ('sfEvtKeyPressed
          (case (sfKeyEvent-code (sfEvent-key event))
