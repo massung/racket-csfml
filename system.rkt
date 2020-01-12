@@ -3,7 +3,7 @@
 
 #|
 
-SFML Wrapper for Racket
+CSFML Wrapper for Racket
 
 Copyright (c) 2020 by Jeffrey Massung
 All rights reserved.
