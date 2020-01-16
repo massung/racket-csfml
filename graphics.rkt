@@ -702,10 +702,10 @@ All rights reserved.
   (_fun _sfRenderWindow* -> _sfIntRect))
 
 (define-sfml sfRenderWindow_mapPixelToCoords
-  (_fun _sfRenderWindow* _sfVector2i _sfView* -> _sfVector2f))
+  (_fun _sfRenderWindow* _sfVector2i (_or-null _sfView*) -> _sfVector2f))
 
 (define-sfml sfRenderWindow_mapCoordsToPixel
-  (_fun _sfRenderWindow* _sfVector2f _sfView* -> _sfVector2i))
+  (_fun _sfRenderWindow* _sfVector2f (_or-null _sfView*) -> _sfVector2i))
 
 (define-sfml sfRenderWindow_drawSprite
   (_fun _sfRenderWindow* _sfSprite* (_or-null _sfRenderStates*) -> _void))
@@ -1151,16 +1151,16 @@ All rights reserved.
   (_fun _uint _uint -> _sfTexture*))
 
 (define-sfml sfTexture_createFromFile
-  (_fun _string -> _sfTexture*))
+  (_fun _string(_or-null _sfIntRect*)  -> _sfTexture*))
 
 (define-sfml sfTexture_createFromMemory
-  (_fun _pointer _uint -> _sfTexture*))
+  (_fun _pointer _uint (_or-null _sfIntRect*) -> _sfTexture*))
 
 (define-sfml sfTexture_createFromStream
-  (_fun _sfInputStream* -> _sfTexture*))
+  (_fun _sfInputStream* (_or-null _sfIntRect*) -> _sfTexture*))
 
 (define-sfml sfTexture_createFromImage
-  (_fun _sfImage* _sfIntRect* -> _sfTexture*))
+  (_fun _sfImage* (_or-null _sfIntRect*) -> _sfTexture*))
 
 (define-sfml sfTexture_copy
   (_fun _sfTexture* -> _sfTexture*))
@@ -1406,6 +1406,9 @@ All rights reserved.
 
 (define-sfml sfView_destroy
   (_fun _sfView* -> _void))
+
+(define-sfml sfView_setCenter
+  (_fun _sfView* _sfVector2f -> _void))
 
 (define-sfml sfView_setSize
   (_fun _sfView* _sfVector2f -> _void))
