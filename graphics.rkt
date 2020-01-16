@@ -1259,6 +1259,9 @@ All rights reserved.
 (define-sfml sfTransform_equal
   (_fun _sfTransform* _sfTransform* -> _bool))
 
+(define sfTransform_Identity
+  (sfTransform_fromMatrix 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0))
+
 ;; ----------------------------------------------------
 ;; Transformable.h
 ;; ----------------------------------------------------
