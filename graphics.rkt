@@ -402,16 +402,16 @@ All rights reserved.
 ;; ----------------------------------------------------
 
 (define-sfml sfFloatRect_contains
-  (_fun _sfFloatRect* _float _float -> _bool))
+  (_fun _sfFloatRect-pointer _float _float -> _bool))
 
 (define-sfml sfIntRect_contains
-  (_fun _sfIntRect* _int _int -> _bool))
+  (_fun _sfIntRect-pointer _int _int -> _bool))
 
 (define-sfml sfFloatRect_intersects
-  (_fun _sfFloatRect* _sfFloatRect* (i : (_ptr o _sfFloatRect)) -> (p : _bool) -> (values p i)))
+  (_fun _sfFloatRect-pointer _sfFloatRect-pointer (i : (_ptr o _sfFloatRect)) -> (p : _bool) -> (values p i)))
 
 (define-sfml sfIntRect_intersects
-  (_fun _sfIntRect* _sfIntRect* (i : (_ptr o _sfIntRect)) -> (p : _bool) -> (values p i)))
+  (_fun _sfIntRect-pointer _sfIntRect-pointer (i : (_ptr o _sfIntRect)) -> (p : _bool) -> (values p i)))
 
 ;; ----------------------------------------------------
 ;; RectangleShape.h
@@ -578,7 +578,7 @@ All rights reserved.
   (_fun _sfRenderTexture* _sfVertexBuffer* (_or-null _sfRenderStates*) -> _void))
 
 (define-sfml sfRenderTexture_drawPrimitives
-  (_fun _sfRenderTexture* _sfVertex* _uint _sfPrimitiveType (_or-null _sfRenderStates*) -> _void))
+  (_fun _sfRenderTexture* _sfVertex-pointer _uint _sfPrimitiveType (_or-null _sfRenderStates*) -> _void))
 
 (define-sfml sfRenderTexture_pushGLStates
   (_fun _sfRenderTexture* -> _void))
@@ -732,7 +732,7 @@ All rights reserved.
   (_fun _sfRenderWindow* _sfVertexBuffer* (_or-null _sfRenderStates*) -> _void))
 
 (define-sfml sfRenderWindow_drawPrimitives
-  (_fun _sfRenderWindow* _sfVertex* _uint _sfPrimitiveType (_or-null _sfRenderStates*) -> _void))
+  (_fun _sfRenderWindow* _sfVertex-pointer _uint _sfPrimitiveType (_or-null _sfRenderStates*) -> _void))
 
 (define-sfml sfRenderWindow_pushGLStates
   (_fun _sfRenderWindow* -> _void))
@@ -814,10 +814,10 @@ All rights reserved.
   (_fun _sfShader* _string _sfGlslBvec4 -> _void))
 
 (define-sfml sfShader_setMat3Uniform
-  (_fun _sfShader* _string _sfGlslMat3* -> _void))
+  (_fun _sfShader* _string _sfGlslMat3-pointer -> _void))
 
 (define-sfml sfShader_setMat4Uniform
-  (_fun _sfShader* _string _sfGlslMat4* -> _void))
+  (_fun _sfShader* _string _sfGlslMat4-pointer -> _void))
 
 (define-sfml sfShader_setTextureUniform
   (_fun _sfShader* _string _sfTexture* -> _void))
@@ -829,19 +829,19 @@ All rights reserved.
   (_fun _sfShader* _string _pointer _uint -> _void))
 
 (define-sfml sfShader_setVec2UniformArray
-  (_fun _sfShader* _string _sfGlslVec2* _uint -> _void))
+  (_fun _sfShader* _string _sfGlslVec2-pointer _uint -> _void))
 
 (define-sfml sfShader_setVec3UniformArray
-  (_fun _sfShader* _string _sfGlslVec3* _uint -> _void))
+  (_fun _sfShader* _string _sfGlslVec3-pointer _uint -> _void))
 
 (define-sfml sfShader_setVec4UniformArray
-  (_fun _sfShader* _string _sfGlslVec4* _uint -> _void))
+  (_fun _sfShader* _string _sfGlslVec4-pointer _uint -> _void))
 
 (define-sfml sfShader_setMat3UniformArray
-  (_fun _sfShader* _string _sfGlslMat3* _uint -> _void))
+  (_fun _sfShader* _string _sfGlslMat3-pointer _uint -> _void))
 
 (define-sfml sfShader_setMat4UniformArray
-  (_fun _sfShader* _string _sfGlslMat4* _uint -> _void))
+  (_fun _sfShader* _string _sfGlslMat4-pointer _uint -> _void))
 
 (define-sfml sfShader_getNativeHandle
   (_fun _sfShader* -> _uint))
@@ -1151,16 +1151,16 @@ All rights reserved.
   (_fun _uint _uint -> _sfTexture*))
 
 (define-sfml sfTexture_createFromFile
-  (_fun _string(_or-null _sfIntRect*)  -> _sfTexture*))
+  (_fun _string (_or-null _sfIntRect-pointer)  -> _sfTexture*))
 
 (define-sfml sfTexture_createFromMemory
-  (_fun _pointer _uint (_or-null _sfIntRect*) -> _sfTexture*))
+  (_fun _pointer _uint (_or-null _sfIntRect-pointer) -> _sfTexture*))
 
 (define-sfml sfTexture_createFromStream
-  (_fun _sfInputStream* (_or-null _sfIntRect*) -> _sfTexture*))
+  (_fun _sfInputStream* (_or-null _sfIntRect-pointer) -> _sfTexture*))
 
 (define-sfml sfTexture_createFromImage
-  (_fun _sfImage* (_or-null _sfIntRect*) -> _sfTexture*))
+  (_fun _sfImage* (_or-null _sfIntRect-pointer) -> _sfTexture*))
 
 (define-sfml sfTexture_copy
   (_fun _sfTexture* -> _sfTexture*))
@@ -1227,37 +1227,37 @@ All rights reserved.
   (_fun _float _float _float _float _float _float _float _float _float -> _sfTransform))
 
 (define-sfml sfTransform_getMatrix
-  (_fun _sfTransform* (m : (_ptr o _float)) -> _void -> m))
+  (_fun _sfTransform-pointer (m : (_ptr o _float)) -> _void -> m))
 
 (define-sfml sfTransform_getInverse
-  (_fun _sfTransform* -> _sfTransform))
+  (_fun _sfTransform-pointer -> _sfTransform))
 
 (define-sfml sfTransform_transformPoint
-  (_fun _sfTransform* _sfVector2f -> _sfVector2f))
+  (_fun _sfTransform-pointer _sfVector2f -> _sfVector2f))
 
 (define-sfml sfTransform_transformRect
-  (_fun _sfTransform* _sfFloatRect -> _sfFloatRect))
+  (_fun _sfTransform-pointer _sfFloatRect -> _sfFloatRect))
 
 (define-sfml sfTransform_combine
-  (_fun _sfTransform* _sfTransform* -> _void))
+  (_fun _sfTransform-pointer _sfTransform-pointer -> _void))
 
 (define-sfml sfTransform_translate
-  (_fun _sfTransform* _float _float -> _void))
+  (_fun _sfTransform-pointer _float _float -> _void))
 
 (define-sfml sfTransform_rotate
-  (_fun _sfTransform* _float -> _void))
+  (_fun _sfTransform-pointer _float -> _void))
 
 (define-sfml sfTransform_rotateWithCenter
-  (_fun _sfTransform* _float _float _float -> _void))
+  (_fun _sfTransform-pointer _float _float _float -> _void))
 
 (define-sfml sfTransform_scale
-  (_fun _sfTransform* _float _float -> _void))
+  (_fun _sfTransform-pointer _float _float -> _void))
 
 (define-sfml sfTransform_scaleWithCenter
-  (_fun _sfTransform* _float _float _float _float -> _void))
+  (_fun _sfTransform-pointer _float _float _float _float -> _void))
 
 (define-sfml sfTransform_equal
-  (_fun _sfTransform* _sfTransform* -> _bool))
+  (_fun _sfTransform-pointer _sfTransform-pointer -> _bool))
 
 (define sfTransform_Identity
   (sfTransform_fromMatrix 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0))
@@ -1331,7 +1331,7 @@ All rights reserved.
   (_fun _sfVertexArray* -> _uint))
 
 (define-sfml sfVertexArray_getVertex
-  (_fun _sfVertexArray* _uint -> _sfVertex*))
+  (_fun _sfVertexArray* _uint -> _sfVertex-pointer))
 
 (define-sfml sfVertexArray_clear
   (_fun _sfVertexArray* -> _void))
@@ -1365,7 +1365,7 @@ All rights reserved.
   (_fun _sfVertexBuffer* -> _uint))
 
 (define-sfml sfVertexBuffer_update
-  (_fun _sfVertexBuffer* _sfVertex* _uint _uint -> _bool))
+  (_fun _sfVertexBuffer* _sfVertex-pointer _uint _uint -> _bool))
 
 (define-sfml sfVertexBuffer_updateFromVertexBuffer
   (_fun _sfVertexBuffer* _sfVertexBuffer* -> _bool))
