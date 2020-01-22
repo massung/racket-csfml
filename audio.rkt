@@ -179,6 +179,9 @@ All rights reserved.
 (define-sfml sfSound_getLoop
   (_fun _sfSound* -> _bool))
 
+(define-sfml sfSound_getStatus
+  (_fun _sfSound* -> _sfSoundStatus))
+
 (define-sfml sfSound_setPitch
   (_fun _sfSound* _float -> _void))
 
