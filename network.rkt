@@ -18,7 +18,7 @@ All rights reserved.
   (ffi-lib (case (system-type 'os)
              ('windows "csfml-network-2")
              ('unix "libcsfml-network")
-             ('macos "libcsfml-network"))))
+             ('macosx "libcsfml-network"))))
 
 ;; ----------------------------------------------------
 
