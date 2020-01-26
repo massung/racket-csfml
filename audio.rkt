@@ -18,7 +18,7 @@ All rights reserved.
   (ffi-lib (case (system-type 'os)
              ('windows "csfml-audio-2")
              ('unix "libcsfml-audio")
-             ('macos "libcsfml-audio"))))
+             ('macosx "libcsfml-audio"))))
 
 ;; ----------------------------------------------------
 

@@ -18,7 +18,7 @@ All rights reserved.
   (ffi-lib (case (system-type 'os)
              ('windows "csfml-graphics-2")
              ('unix "libcsfml-graphics")
-             ('macos "libcsfml-graphics"))))
+             ('macosx "libcsfml-graphics"))))
 
 ;; ----------------------------------------------------
 

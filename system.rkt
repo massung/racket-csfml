@@ -19,7 +19,7 @@ All rights reserved.
   (ffi-lib (case (system-type 'os)
              ('windows "csfml-system-2")
              ('unix "libcsfml-system")
-             ('macos "libcsfml-system"))))
+             ('macosx "libcsfml-system"))))
 
 ;; ----------------------------------------------------
 
