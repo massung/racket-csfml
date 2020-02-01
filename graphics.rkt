@@ -766,7 +766,7 @@ All rights reserved.
   (_fun _string _string _string -> _sfShader*))
 
 (define-sfml sfShader_createFromStream
-  (_fun _sfInputStream* _sfInputStream* _sfInputStream* -> _sfShader*))
+  (_fun (_or-null _sfInputStream*) (_or-null _sfInputStream*) (_or-null _sfInputStream*) -> _sfShader*))
 
 (define-sfml sfShader_destroy
   (_fun _sfShader* -> _void))
