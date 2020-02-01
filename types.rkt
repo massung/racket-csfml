@@ -258,8 +258,8 @@ All rights reserved.
 (define-cstruct _sfRenderStates
   ([blendMode _sfBlendMode]
    [transform _sfTransform]
-   [texture _sfTexture*]
-   [shader _sfShader*]))
+   [texture (_or-null _sfTexture*)]
+   [shader (_or-null _sfShader*)]))
 
 ;; ----------------------------------------------------
 ;; Graphics/Vertex.h
