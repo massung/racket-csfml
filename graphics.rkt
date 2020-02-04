@@ -760,13 +760,13 @@ All rights reserved.
 ;; ----------------------------------------------------
 
 (define-sfml sfShader_createFromFile
-  (_fun _string _string _string -> _sfShader*))
+  (_fun _string _string _string -> (_or-null _sfShader*)))
 
 (define-sfml sfShader_createFromMemory
-  (_fun _string _string _string -> _sfShader*))
+  (_fun _string _string _string -> (_or-null _sfShader*)))
 
 (define-sfml sfShader_createFromStream
-  (_fun (_or-null _sfInputStream*) (_or-null _sfInputStream*) (_or-null _sfInputStream*) -> _sfShader*))
+  (_fun (_or-null _sfInputStream*) (_or-null _sfInputStream*) (_or-null _sfInputStream*) -> (_or-null _sfShader*)))
 
 (define-sfml sfShader_destroy
   (_fun _sfShader* -> _void))
