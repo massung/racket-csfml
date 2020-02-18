@@ -10,6 +10,7 @@ All rights reserved.
 |#
 
 (require ffi/unsafe)
+(require ffi/unsafe/alloc)
 (require ffi/unsafe/define)
 
 ;; ----------------------------------------------------
@@ -34,7 +35,8 @@ All rights reserved.
 ;; ----------------------------------------------------
 
 (define-sfml sfFtpListingResponse_destroy
-  (_fun _sfFtpListingResponse* -> _void))
+  (_fun _sfFtpListingResponse* -> _void)
+  #:wrap (deallocator))
 
 (define-sfml sfFtpListingResponse_isOk
   (_fun _sfFtpListingResponse* -> _bool))
@@ -52,7 +54,8 @@ All rights reserved.
   (_fun _sfFtpListingResponse* _int32 -> _string))
 
 (define-sfml sfFtpDirectoryResponse_destroy
-  (_fun _sfFtpDirectoryResponse* -> _void))
+  (_fun _sfFtpDirectoryResponse* -> _void)
+  #:wrap (deallocator))
 
 (define-sfml sfFtpDirectoryResponse_isOk
   (_fun _sfFtpDirectoryResponse* -> _bool))
@@ -67,7 +70,8 @@ All rights reserved.
   (_fun _sfFtpDirectoryResponse* -> _string))
 
 (define-sfml sfFtpResponse_destroy
-  (_fun _sfFtpResponse* -> _void))
+  (_fun _sfFtpResponse* -> _void)
+  #:wrap (deallocator))
 
 (define-sfml sfFtpResponse_isOk
   (_fun _sfFtpResponse* -> _bool))
@@ -78,69 +82,89 @@ All rights reserved.
 (define-sfml sfFtpResponse_getMessage
   (_fun _sfFtpResponse* -> _string))
 
-(define-sfml sfFtp_create
-  (_fun -> _sfFtp*))
-
 (define-sfml sfFtp_destroy
-  (_fun _sfFtp* -> _void))
+  (_fun _sfFtp* -> _void)
+  #:wrap (deallocator))
+
+(define-sfml sfFtp_create
+  (_fun -> _sfFtp*)
+  #:wrap (allocator sfFtp_destroy))
 
 (define-sfml sfFtp_connect
-  (_fun _sfFtp* _sfIpAddress _uint16 _sfTime -> _sfFtpResponse*))
+  (_fun _sfFtp* _sfIpAddress _uint16 _sfTime -> _sfFtpResponse*)
+  #:wrap (allocator sfFtpResponse_destroy))
 
 (define-sfml sfFtp_loginAnonymous
-  (_fun _sfFtp* -> _sfFtpResponse*))
+  (_fun _sfFtp* -> _sfFtpResponse*)
+  #:wrap (allocator sfFtpResponse_destroy))
 
 (define-sfml sfFtp_login
-  (_fun _sfFtp* _string _string -> _sfFtpResponse*))
+  (_fun _sfFtp* _string _string -> _sfFtpResponse*)
+  #:wrap (allocator sfFtpResponse_destroy))
 
 (define-sfml sfFtp_disconnect
-  (_fun _sfFtp* -> _sfFtpResponse*))
+  (_fun _sfFtp* -> _sfFtpResponse*)
+  #:wrap (allocator sfFtpResponse_destroy))
 
 (define-sfml sfFtp_keepAlive
-  (_fun _sfFtp* -> _sfFtpResponse*))
+  (_fun _sfFtp* -> _sfFtpResponse*)
+  #:wrap (allocator sfFtpResponse_destroy))
 
 (define-sfml sfFtp_getWorkingDirectory
-  (_fun _sfFtp* -> _sfFtpDirectoryResponse*))
+  (_fun _sfFtp* -> _sfFtpDirectoryResponse*)
+  #:wrap (allocator sfFtpDirectoryResponse_destroy))
 
 (define-sfml sfFtp_getDirectoryListing
-  (_fun _sfFtp* _string -> _sfFtpListingResponse*))
+  (_fun _sfFtp* _string -> _sfFtpListingResponse*)
+  #:wrap (allocator sfFtpListingResponse_destroy))
 
 (define-sfml sfFtp_changeDirectory
-  (_fun _sfFtp* _string -> _sfFtpResponse*))
+  (_fun _sfFtp* _string -> _sfFtpResponse*)
+  #:wrap (allocator sfFtpResponse_destroy))
 
 (define-sfml sfFtp_parentDirectory
-  (_fun _sfFtp* -> _sfFtpResponse*))
+  (_fun _sfFtp* -> _sfFtpResponse*)
+  #:wrap (allocator sfFtpResponse_destroy))
 
 (define-sfml sfFtp_createDirectory
-  (_fun _sfFtp* _string -> _sfFtpResponse*))
+  (_fun _sfFtp* _string -> _sfFtpResponse*)
+  #:wrap (allocator sfFtpResponse_destroy))
 
 (define-sfml sfFtp_deleteDirectory
-  (_fun _sfFtp* _string -> _sfFtpResponse*))
+  (_fun _sfFtp* _string -> _sfFtpResponse*)
+  #:wrap (allocator sfFtpResponse_destroy))
 
 (define-sfml sfFtp_renameFile
-  (_fun _sfFtp* _string _string -> _sfFtpResponse*))
+  (_fun _sfFtp* _string _string -> _sfFtpResponse*)
+  #:wrap (allocator sfFtpResponse_destroy))
 
 (define-sfml sfFtp_deleteFile
-  (_fun _sfFtp* _string -> _sfFtpResponse*))
+  (_fun _sfFtp* _string -> _sfFtpResponse*)
+  #:wrap (allocator sfFtpResponse_destroy))
 
 (define-sfml sfFtp_download
-  (_fun _sfFtp* _string _string _sfFtpTransferMode -> _sfFtpResponse*))
+  (_fun _sfFtp* _string _string _sfFtpTransferMode -> _sfFtpResponse*)
+  #:wrap (allocator sfFtpResponse_destroy))
 
 (define-sfml sfFtp_upload
-  (_fun _sfFtp* _string _string _sfFtpTransferMode -> _sfFtpResponse*))
+  (_fun _sfFtp* _string _string _sfFtpTransferMode -> _sfFtpResponse*)
+  #:wrap (allocator sfFtpResponse_destroy))
 
 (define-sfml sfFtp_sendCommand
-  (_fun _sfFtp* _string _string -> _sfFtpResponse*))
+  (_fun _sfFtp* _string _string -> _sfFtpResponse*)
+  #:wrap (allocator sfFtpResponse_destroy))
 
 ;; ----------------------------------------------------
 ;; Http.h
 ;; ----------------------------------------------------
 
-(define-sfml sfHttpRequest_create
-  (_fun -> _sfHttpRequest*))
-
 (define-sfml sfHttpRequest_destroy
-  (_fun _sfHttpRequest* -> _void))
+  (_fun _sfHttpRequest* -> _void)
+  #:wrap (deallocator))
+
+(define-sfml sfHttpRequest_create
+  (_fun -> _sfHttpRequest*)
+  #:wrap (allocator sfHttpRequest_destroy))
 
 (define-sfml sfHttpRequest_setField
   (_fun _sfHttpRequest* _string _string -> _void))
@@ -158,7 +182,8 @@ All rights reserved.
   (_fun _sfHttpRequest* _string -> _void))
 
 (define-sfml sfHttpResponse_destroy
-  (_fun _sfHttpResponse* -> _void))
+  (_fun _sfHttpResponse* -> _void)
+  #:wrap (deallocator))
 
 (define-sfml sfHttpResponse_getField
   (_fun _sfHttpResponse* _string -> _string))
@@ -175,17 +200,20 @@ All rights reserved.
 (define-sfml sfHttpResponse_getBody
   (_fun _sfHttpResponse* -> _string))
 
-(define-sfml sfHttp_create
-  (_fun -> _sfHttp*))
-
 (define-sfml sfHttp_destroy
-  (_fun _sfHttp* -> _void))
+  (_fun _sfHttp* -> _void)
+  #:wrap (deallocator))
+
+(define-sfml sfHttp_create
+  (_fun -> _sfHttp*)
+  #:wrap (allocator sfHttp_destroy))
 
 (define-sfml sfHttp_setHost
   (_fun _sfHttp* _string _uint -> _void))
 
 (define-sfml sfHttp_sendRequest
-  (_fun _sfHttp* _sfHttpRequest* -> _sfHttpResponse*))
+  (_fun _sfHttp* _sfHttpRequest* -> _sfHttpResponse*)
+  #:wrap (allocator sfHttpResponse_destroy))
 
 ;; ----------------------------------------------------
 ;; IpAddress.h
@@ -216,14 +244,16 @@ All rights reserved.
 ;; Packet.h
 ;; ----------------------------------------------------
 
+(define-sfml sfPacket_destroy
+  (_fun _sfPacket* -> _void)
+  #:wrap (deallocator))
+
 (define-sfml sfPacket_create
-  (_fun -> _sfPacket*))
+  (_fun -> _sfPacket*)
+  #:wrap (allocator sfPacket_destroy))
 
 (define-sfml sfPacket_copy
   (_fun _sfPacket* -> _sfPacket*))
-
-(define-sfml sfPacket_destroy
-  (_fun _sfPacket* -> _void))
 
 (define-sfml sfPacket_append
   (_fun _sfPacket* _pointer _int -> _void))
@@ -307,14 +337,16 @@ All rights reserved.
 ;; SocketSelector.h
 ;; ----------------------------------------------------
 
+(define-sfml sfSocketSelector_destroy
+  (_fun _sfSocketSelector* -> _void)
+  #:wrap (deallocator))
+
 (define-sfml sfSocketSelector_create
-  (_fun -> _sfSocketSelector*))
+  (_fun -> _sfSocketSelector*)
+  #:wrap (allocator sfSocketSelector_destroy))
 
 (define-sfml sfSocketSelector_copy
   (_fun _sfSocketSelector* -> _sfSocketSelector*))
-
-(define-sfml sfSocketSelector_destroy
-  (_fun _sfSocketSelector* -> _void))
 
 (define-sfml sfSocketSelector_addTcpListener
   (_fun _sfSocketSelector* _sfTcpListener* -> _void))
@@ -353,11 +385,13 @@ All rights reserved.
 ;; TcpListener.h
 ;; ----------------------------------------------------
 
-(define-sfml sfTcpListener_create
-  (_fun -> _sfTcpListener*))
-
 (define-sfml sfTcpListener_destroy
-  (_fun _sfTcpListener* -> _void))
+  (_fun _sfTcpListener* -> _void)
+  #:wrap (deallocator))
+
+(define-sfml sfTcpListener_create
+  (_fun -> _sfTcpListener*)
+  #:wrap (allocator sfTcpListener_destroy))
 
 (define-sfml sfTcpListener_setBlocking
   (_fun _sfTcpListener* _bool -> _void))
@@ -378,11 +412,13 @@ All rights reserved.
 ;; TcpSocket.h
 ;; ----------------------------------------------------
 
-(define-sfml sfTcpSocket_create
-  (_fun -> _sfTcpSocket*))
-
 (define-sfml sfTcpSocket_destroy
-  (_fun _sfTcpSocket* -> _void))
+  (_fun _sfTcpSocket* -> _void)
+  #:wrap (deallocator))
+
+(define-sfml sfTcpSocket_create
+  (_fun -> _sfTcpSocket*)
+  #:wrap (allocator sfTcpSocket_destroy))
 
 (define-sfml sfTcpSocket_setBlocking
   (_fun _sfTcpSocket* _bool -> _void))
@@ -424,11 +460,13 @@ All rights reserved.
 ;; UdpSocket.h
 ;; ----------------------------------------------------
 
-(define-sfml sfUdpSocket_create
-  (_fun -> _sfUdpSocket*))
-
 (define-sfml sfUdpSocket_destroy
-  (_fun _sfUdpSocket* -> _void))
+  (_fun _sfUdpSocket* -> _void)
+  #:wrap (deallocator))
+
+(define-sfml sfUdpSocket_create
+  (_fun -> _sfUdpSocket*)
+  #:wrap (allocator sfUdpSocket_destroy))
 
 (define-sfml sfUdpSocket_setBlocking
   (_fun _sfUdpSocket* _bool -> _void))

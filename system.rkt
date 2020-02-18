@@ -11,6 +11,7 @@ All rights reserved.
 |#
 
 (require ffi/unsafe)
+(require ffi/unsafe/alloc)
 (require ffi/unsafe/define)
 
 ;; ----------------------------------------------------
@@ -34,14 +35,16 @@ All rights reserved.
 ;; Clock.h
 ;; ----------------------------------------------------
 
+(define-sfml sfClock_destroy
+  (_fun _sfClock* -> _void)
+  #:wrap (deallocator))
+
 (define-sfml sfClock_create
-  (_fun -> _sfClock*))
+  (_fun -> _sfClock*)
+  #:wrap (allocator sfClock_destroy))
 
 (define-sfml sfClock_copy
   (_fun _sfClock* -> _sfClock*))
-
-(define-sfml sfClock_destroy
-  (_fun _sfClock* -> _void))
 
 (define-sfml sfClock_getElapsedTime
   (_fun _sfClock* -> _sfTime))
@@ -53,11 +56,13 @@ All rights reserved.
 ;; Mutex.h
 ;; ----------------------------------------------------
 
-(define-sfml sfMutex_create
-  (_fun -> _sfMutex*))
-
 (define-sfml sfMutex_destroy
-  (_fun _sfMutex* -> _void))
+  (_fun _sfMutex* -> _void)
+  #:wrap (deallocator))
+
+(define-sfml sfMutex_create
+  (_fun -> _sfMutex*)
+  #:wrap (allocator sfMutex_destroy))
 
 (define-sfml sfMutex_lock
   (_fun _sfMutex* -> _void))
@@ -76,11 +81,13 @@ All rights reserved.
 ;; Thread.h
 ;; ----------------------------------------------------
 
-(define-sfml sfThread_create
-  (_fun (_fun _pointer -> _void) _pointer -> _sfThread*))
-
 (define-sfml sfThread_destroy
-  (_fun _sfThread* -> _void))
+  (_fun _sfThread* -> _void)
+  #:wrap (deallocator))
+
+(define-sfml sfThread_create
+  (_fun (_fun _pointer -> _void) _pointer -> _sfThread*)
+  #:wrap (allocator sfThread_destroy))
 
 (define-sfml sfThread_launch
   (_fun _sfThread* -> _void))

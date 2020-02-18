@@ -10,6 +10,7 @@ All rights reserved.
 |#
 
 (require ffi/unsafe)
+(require ffi/unsafe/alloc)
 (require ffi/unsafe/define)
 
 ;; ----------------------------------------------------
@@ -58,17 +59,21 @@ All rights reserved.
 ;; Music.h
 ;; ----------------------------------------------------
 
+(define-sfml sfMusic_destroy
+  (_fun _sfMusic* -> _void)
+  #:wrap (deallocator))
+
 (define-sfml sfMusic_createFromFile
-  (_fun _string -> _sfMusic*))
+  (_fun _string -> _sfMusic*)
+  #:wrap (allocator sfMusic_destroy))
 
 (define-sfml sfMusic_createFromMemory
-  (_fun _pointer _uint -> _sfMusic*))
+  (_fun _pointer _uint -> _sfMusic*)
+  #:wrap (allocator sfMusic_destroy))
 
 (define-sfml sfMusic_createFromStream
-  (_fun _sfInputStream* -> _sfMusic*))
-
-(define-sfml sfMusic_destroy
-  (_fun _sfMusic* -> _void))
+  (_fun _sfInputStream* -> _sfMusic*)
+  #:wrap (allocator sfMusic_destroy))
 
 (define-sfml sfMusic_setLoop
   (_fun _sfMusic* _bool -> _void))
@@ -149,14 +154,17 @@ All rights reserved.
 ;; Sound.h
 ;; ----------------------------------------------------
 
+(define-sfml sfSound_destroy
+  (_fun _sfSound* -> _void)
+  #:wrap (deallocator))
+
 (define-sfml sfSound_create
-  (_fun -> _sfSound*))
+  (_fun -> _sfSound*)
+  #:wrap (allocator sfSound_destroy))
 
 (define-sfml sfSound_copy
-  (_fun _sfSound* -> _sfSound*))
-
-(define-sfml sfSound_destroy
-  (_fun _sfSound* -> _void))
+  (_fun _sfSound* -> _sfSound*)
+  #:wrap (allocator sfSound_destroy))
 
 (define-sfml sfSound_play
   (_fun _sfSound* -> _void))
@@ -225,29 +233,35 @@ All rights reserved.
 ;; SoundBuffer.h
 ;; ----------------------------------------------------
 
+(define-sfml sfSoundBuffer_destroy
+  (_fun _sfSoundBuffer* -> _void)
+  #:wrap (deallocator))
+
 (define-sfml sfSoundBuffer_createFromFile
-  (_fun _string -> _sfSoundBuffer*))
+  (_fun _string -> _sfSoundBuffer*)
+  #:wrap (allocator sfSoundBuffer_destroy))
 
 (define-sfml sfSoundBuffer_createFromMemory
-  (_fun _pointer _uint -> _sfSoundBuffer*))
+  (_fun _pointer _uint -> _sfSoundBuffer*)
+  #:wrap (allocator sfSoundBuffer_destroy))
 
 (define-sfml sfSoundBuffer_createFromStream
-  (_fun _sfInputStream* -> _sfSoundBuffer*))
+  (_fun _sfInputStream* -> _sfSoundBuffer*)
+  #:wrap (allocator sfSoundBuffer_destroy))
 
 (define-sfml sfSoundBuffer_createFromSamples
-  (_fun (_ptr i _uint16) _uint64 _uint _uint -> _sfSoundBuffer*))
+  (_fun _pointer _uint64 _uint _uint -> _sfSoundBuffer*)
+  #:wrap (allocator sfSoundBuffer_destroy))
 
 (define-sfml sfSoundBuffer_copy
-  (_fun _sfSoundBuffer* -> _sfSoundBuffer*))
-
-(define-sfml sfSoundBuffer_destroy
-  (_fun _sfSoundBuffer* -> _void))
+  (_fun _sfSoundBuffer* -> _sfSoundBuffer*)
+  #:wrap (allocator sfSoundBuffer_destroy))
 
 (define-sfml sfSoundBuffer_saveToFile
   (_fun _sfSoundBuffer* _string -> _bool))
 
 (define-sfml sfSoundBuffer_getSamples
-  (_fun _sfSoundBuffer* -> (_ptr o _uint16)))
+  (_fun _sfSoundBuffer* -> (_ptr o _sint16)))
 
 (define-sfml sfSoundBuffer_getSampleCount
   (_fun _sfSoundBuffer* -> _uint64))
@@ -265,11 +279,13 @@ All rights reserved.
 ;; SoundBufferRecorder.h
 ;; ----------------------------------------------------
 
-(define-sfml sfSoundBufferRecorder_create
-  (_fun -> _sfSoundBufferRecorder*))
-
 (define-sfml sfSoundBufferRecorder_destroy
-  (_fun _sfSoundBufferRecorder* -> _void))
+  (_fun _sfSoundBufferRecorder* -> _void)
+  #:wrap (deallocator))
+
+(define-sfml sfSoundBufferRecorder_create
+  (_fun -> _sfSoundBufferRecorder*)
+  #:wrap (allocator sfSoundBufferRecorder_destroy))
 
 (define-sfml sfSoundBufferRecorder_start
   (_fun _sfSoundBufferRecorder* _uint -> _bool))
@@ -293,11 +309,13 @@ All rights reserved.
 ;; SoundRecorder.h
 ;; ----------------------------------------------------
 
-(define-sfml sfSoundRecorder_create
-  (_fun _sfSoundRecorderStartCallback _sfSoundRecorderProcessCallback _sfSoundRecorderStopCallback _pointer -> _sfSoundRecorder*))
-
 (define-sfml sfSoundRecorder_destroy
-  (_fun _sfSoundRecorder* -> _void))
+  (_fun _sfSoundRecorder* -> _void)
+  #:wrap (deallocator))
+
+(define-sfml sfSoundRecorder_create
+  (_fun _sfSoundRecorderStartCallback _sfSoundRecorderProcessCallback _sfSoundRecorderStopCallback _pointer -> _sfSoundRecorder*)
+  #:wrap (allocator sfSoundRecorder_destroy))
 
 (define-sfml sfSoundRecorder_start
   (_fun _sfSoundRecorder* _uint -> _bool))
@@ -336,13 +354,18 @@ All rights reserved.
 ;; SoundStream.h
 ;; ----------------------------------------------------
 
-(define-sfml sfSoundStream_create
-  (_fun _sfSoundStreamGetDataCallback _sfSoundStreamSeekCallback _uint _uint _pointer -> _sfSoundStream*))
-
 (define-sfml sfSoundStream_destroy
-  (_fun _sfSoundStream* -> _void))
+  (_fun _sfSoundStream* -> _void)
+  #:wrap (deallocator))
+
+(define-sfml sfSoundStream_create
+  (_fun _sfSoundStreamGetDataCallback _sfSoundStreamSeekCallback _uint _uint _pointer -> _sfSoundStream*)
+  #:wrap (allocator sfSoundStream_destroy))
 
 (define-sfml sfSoundStream_play
+  (_fun _sfSoundStream* -> _void))
+
+(define-sfml sfSoundStream_pause
   (_fun _sfSoundStream* -> _void))
 
 (define-sfml sfSoundStream_stop

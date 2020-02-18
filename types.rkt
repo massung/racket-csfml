@@ -132,10 +132,10 @@ All rights reserved.
   ([samples _pointer]
    [sampleCount _uint]))
 
-(define-cpointer-type _sfSoundStreamGetDataCallback
-  (_fun (_ptr i _sfSoundStreamChunk) _pointer -> _bool))
+(define _sfSoundStreamGetDataCallback
+  (_fun _sfSoundStreamChunk _pointer -> _bool))
 
-(define-cpointer-type _sfSoundStreamSeekCallback
+(define _sfSoundStreamSeekCallback
   (_fun _sfTime _pointer -> _void))
 
 ;; ----------------------------------------------------
@@ -226,13 +226,13 @@ All rights reserved.
 ;; Audio/SoundRecorder.h
 ;; ----------------------------------------------------
 
-(define-cpointer-type _sfSoundRecorderStartCallback
+(define _sfSoundRecorderStartCallback
   (_fun _pointer -> _bool))
-
-(define-cpointer-type _sfSoundRecorderProcessCallback
+ 
+(define _sfSoundRecorderProcessCallback
   (_fun (_ptr i _int16) _uint _pointer -> _bool))
 
-(define-cpointer-type _sfSoundRecorderStopCallback
+(define _sfSoundRecorderStopCallback
   (_fun _pointer -> _bool))
 
 ;; ----------------------------------------------------
@@ -281,26 +281,26 @@ All rights reserved.
 ;; Graphics/Shape.h
 ;; ----------------------------------------------------
 
-(define-cpointer-type _sfShapeGetPointCountCallback
+(define _sfShapeGetPointCountCallback
   (_fun _pointer -> _uint))
 
-(define-cpointer-type _sfShapeGetPointCallback
+(define _sfShapeGetPointCallback
   (_fun _uint _pointer -> _sfVector2f))
 
 ;; ----------------------------------------------------
 ;; System/InputStream.h
 ;; ----------------------------------------------------
 
-(define-cpointer-type _sfInputStreamReadFunc
+(define _sfInputStreamReadFunc
   (_fun _pointer _int64 _pointer -> _int64))
 
-(define-cpointer-type _sfInputStreamSeekFunc
+(define _sfInputStreamSeekFunc
   (_fun _int64 _pointer -> _int64))
 
-(define-cpointer-type _sfInputStreamTellFunc
+(define _sfInputStreamTellFunc
   (_fun _pointer -> _int64))
 
-(define-cpointer-type _sfInputStreamGetSizeFunc
+(define _sfInputStreamGetSizeFunc
   (_fun _pointer -> _int64))
 
 (define-cstruct _sfInputStream

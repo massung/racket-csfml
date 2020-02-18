@@ -10,6 +10,7 @@ All rights reserved.
 |#
 
 (require ffi/unsafe)
+(require ffi/unsafe/alloc)
 (require ffi/unsafe/define)
 
 ;; ----------------------------------------------------
@@ -69,11 +70,13 @@ All rights reserved.
 ;; CircleShape.h
 ;; ----------------------------------------------------
 
-(define-sfml sfCircleShape_create
-  (_fun -> _sfCircleShape*))
-
 (define-sfml sfCircleShape_destroy
-  (_fun _sfCircleShape* -> _void))
+  (_fun _sfCircleShape* -> _void)
+  #:wrap (deallocator))
+
+(define-sfml sfCircleShape_create
+  (_fun -> _sfCircleShape*)
+  #:wrap (allocator sfCircleShape_destroy))
 
 (define-sfml sfCircleShape_setPosition
   (_fun _sfCircleShape* _sfVector2f -> _void))
@@ -206,14 +209,16 @@ All rights reserved.
 ;; ConvexShape.h
 ;; ----------------------------------------------------
 
+(define-sfml sfConvexShape_destroy
+  (_fun _sfConvexShape* -> _void)
+  #:wrap (deallocator))
+
 (define-sfml sfConvexShape_create
-  (_fun -> _sfConvexShape*))
+  (_fun -> _sfConvexShape*)
+  #:wrap (allocator sfConvexShape_destroy))
 
 (define-sfml sfConvexShape_copy
   (_fun _sfConvexShape* -> _sfConvexShape*))
-
-(define-sfml sfConvexShape_destroy
-  (_fun _sfConvexShape* -> _void))
 
 (define-sfml sfConvexShape_setPosition
   (_fun _sfConvexShape* _sfVector2f -> _void))
@@ -306,20 +311,24 @@ All rights reserved.
 ;; Font.h
 ;; ----------------------------------------------------
 
+(define-sfml sfFont_destroy
+  (_fun _sfFont* -> _void)
+  #:wrap (deallocator))
+
 (define-sfml sfFont_createFromFile
-  (_fun _string -> _sfFont*))
+  (_fun _string -> _sfFont*)
+  #:wrap (allocator sfFont_destroy))
 
 (define-sfml sfFont_createFromMemory
-  (_fun _pointer _uint -> _sfFont*))
+  (_fun _pointer _uint -> _sfFont*)
+  #:wrap (allocator sfFont_destroy))
 
 (define-sfml sfFont_createFromStream
-  (_fun _sfInputStream* -> _sfFont*))
+  (_fun _sfInputStream* -> _sfFont*)
+  #:wrap (allocator sfFont_destroy))
 
 (define-sfml sfFont_copy
   (_fun _sfFont* -> _sfFont*))
-
-(define-sfml sfFont_destroy
-  (_fun _sfFont* -> _void))
 
 (define-sfml sfFont_getGlyph
   (_fun _sfFont* _uint32 _uint _bool _float -> _sfGlyph))
@@ -346,29 +355,37 @@ All rights reserved.
 ;; Image.h
 ;; ----------------------------------------------------
 
+(define-sfml sfImage_destroy
+  (_fun _sfImage* -> _sfImage*)
+  #:wrap (deallocator))
+
 (define-sfml sfImage_create
-  (_fun _uint _uint -> _sfImage*))
+  (_fun _uint _uint -> _sfImage*)
+  #:wrap (allocator sfImage_destroy))
 
 (define-sfml sfImage_createFromColor
-  (_fun _uint _uint _sfColor -> _sfImage*))
+  (_fun _uint _uint _sfColor -> _sfImage*)
+  #:wrap (allocator sfImage_destroy))
 
 (define-sfml sfImage_createFromPixels
-  (_fun _uint _uint (_ptr i _byte) -> _sfImage*))
+  (_fun _uint _uint (_ptr i _byte) -> _sfImage*)
+  #:wrap (allocator sfImage_destroy))
 
 (define-sfml sfImage_createFromFile
-  (_fun _string -> _sfImage*))
+  (_fun _string -> _sfImage*)
+  #:wrap (allocator sfImage_destroy))
 
 (define-sfml sfImage_createFromMemory
-  (_fun _pointer _uint -> _sfImage*))
+  (_fun _pointer _uint -> _sfImage*)
+  #:wrap (allocator sfImage_destroy))
 
 (define-sfml sfImage_createFromStream
-  (_fun _sfInputStream* -> _sfImage*))
+  (_fun _sfInputStream* -> _sfImage*)
+  #:wrap (allocator sfImage_destroy))
 
 (define-sfml sfImage_copy
-  (_fun _sfImage* -> _sfImage*))
-
-(define-sfml sfImage_destroy
-  (_fun _sfImage* -> _sfImage*))
+  (_fun _sfImage* -> _sfImage*)
+  #:wrap (allocator sfImage_destroy))
 
 (define-sfml sfImage_saveToFile
   (_fun _sfImage* _string -> _bool))
@@ -417,14 +434,17 @@ All rights reserved.
 ;; RectangleShape.h
 ;; ----------------------------------------------------
 
+(define-sfml sfRectangleShape_destroy
+  (_fun _sfRectangleShape* -> _void)
+  #:wrap (deallocator))
+
 (define-sfml sfRectangleShape_create
-  (_fun -> _sfRectangleShape*))
+  (_fun -> _sfRectangleShape*)
+  #:wrap (allocator sfRectangleShape_destroy))
 
 (define-sfml sfRectangleShape_copy
-  (_fun _sfRectangleShape* -> _sfRectangleShape*))
-
-(define-sfml sfRectangleShape_destroy
-  (_fun _sfRectangleShape* -> _void))
+  (_fun _sfRectangleShape* -> _sfRectangleShape*)
+  #:wrap (allocator sfRectangleShape_destroy))
 
 (define-sfml sfRectangleShape_setPosition
   (_fun _sfRectangleShape* _sfVector2f -> _void))
@@ -517,11 +537,13 @@ All rights reserved.
 ;; RenderTexture.h
 ;; ----------------------------------------------------
 
-(define-sfml sfRenderTexture_create
-  (_fun _uint _uint _bool -> _sfRenderTexture*))
-
 (define-sfml sfRenderTexture_destroy
-  (_fun _sfRenderTexture* -> _void))
+  (_fun _sfRenderTexture* -> _void)
+  #:wrap (deallocator))
+
+(define-sfml sfRenderTexture_create
+  (_fun _uint _uint _bool -> _sfRenderTexture*)
+  #:wrap (allocator sfRenderTexture_destroy))
 
 (define-sfml sfRenderTexture_getSize
   (_fun _sfRenderTexture* -> _sfVector2u))
@@ -611,11 +633,13 @@ All rights reserved.
 ;; RenderWindow.h
 ;; ----------------------------------------------------
 
-(define-sfml sfRenderWindow_create
-  (_fun _sfVideoMode _string _sfWindowStyle (_or-null _sfContextSettings*) -> _sfRenderWindow*))
-
 (define-sfml sfRenderWindow_destroy
-  (_fun _sfRenderWindow* -> _void))
+  (_fun _sfRenderWindow* -> _void)
+  #:wrap (deallocator))
+
+(define-sfml sfRenderWindow_create
+  (_fun _sfVideoMode _string _sfWindowStyle (_or-null _sfContextSettings*) -> _sfRenderWindow*)
+  #:wrap (allocator sfRenderWindow_destroy))
 
 (define-sfml sfRenderWindow_close
   (_fun _sfRenderWindow* -> _void))
@@ -744,7 +768,8 @@ All rights reserved.
   (_fun _sfRenderWindow* -> _void))
 
 (define-sfml sfRenderWindow_capture
-  (_fun _sfRenderWindow* -> _sfImage*))
+  (_fun _sfRenderWindow* -> _sfImage*)
+  #:wrap (allocator sfImage_destroy))
 
 (define-sfml sfMouse_getPositionRenderWindow
   (_fun _sfRenderWindow* -> _sfVector2i))
@@ -759,17 +784,21 @@ All rights reserved.
 ;; Shader.h
 ;; ----------------------------------------------------
 
+(define-sfml sfShader_destroy
+  (_fun _sfShader* -> _void)
+  #:wrap (deallocator))
+
 (define-sfml sfShader_createFromFile
-  (_fun _string _string _string -> (_or-null _sfShader*)))
+  (_fun _string _string _string -> (_or-null _sfShader*))
+  #:wrap (allocator sfShader_destroy))
 
 (define-sfml sfShader_createFromMemory
-  (_fun _string _string _string -> (_or-null _sfShader*)))
+  (_fun _string _string _string -> (_or-null _sfShader*))
+  #:wrap (allocator sfShader_destroy))
 
 (define-sfml sfShader_createFromStream
-  (_fun (_or-null _sfInputStream*) (_or-null _sfInputStream*) (_or-null _sfInputStream*) -> (_or-null _sfShader*)))
-
-(define-sfml sfShader_destroy
-  (_fun _sfShader* -> _void))
+  (_fun (_or-null _sfInputStream*) (_or-null _sfInputStream*) (_or-null _sfInputStream*) -> (_or-null _sfShader*))
+  #:wrap (allocator sfShader_destroy))
 
 (define-sfml sfShader_setFloatUniform
   (_fun _sfShader* _string _float -> _void))
@@ -859,11 +888,13 @@ All rights reserved.
 ;; Shape.h
 ;; ----------------------------------------------------
 
-(define-sfml sfShape_create
-  (_fun _sfShapeGetPointCountCallback _sfShapeGetPointCallback _pointer -> _sfShape*))
-
 (define-sfml sfShape_destroy
-  (_fun _sfShape* -> _void))
+  (_fun _sfShape* -> _void)
+  #:wrap (deallocator))
+
+(define-sfml sfShape_create
+  (_fun _sfShapeGetPointCountCallback _sfShapeGetPointCallback _pointer -> _sfShape*)
+  #:wrap (allocator sfShape_destroy))
 
 (define-sfml sfShape_setPosition
   (_fun _sfShape* _sfVector2f -> _void))
@@ -953,14 +984,17 @@ All rights reserved.
 ;; Sprite.h
 ;; ----------------------------------------------------
 
+(define-sfml sfSprite_destroy
+  (_fun _sfSprite* -> _void)
+  #:wrap (deallocator))
+
 (define-sfml sfSprite_create
-  (_fun -> _sfSprite*))
+  (_fun -> _sfSprite*)
+  #:wrap (allocator sfSprite_destroy))
 
 (define-sfml sfSprite_copy
-  (_fun _sfSprite* -> _sfSprite*))
-
-(define-sfml sfSprite_destroy
-  (_fun _sfSprite* -> _void))
+  (_fun _sfSprite* -> _sfSprite*)
+  #:wrap (allocator sfSprite_destroy))
 
 (define-sfml sfSprite_setPosition
   (_fun _sfSprite* _sfVector2f -> _void))
@@ -1029,14 +1063,17 @@ All rights reserved.
 ;; Text.h
 ;; ----------------------------------------------------
 
+(define-sfml sfText_destroy
+  (_fun _sfText* -> _void)
+  #:wrap (deallocator))
+
 (define-sfml sfText_create
-  (_fun -> _sfText*))
+  (_fun -> _sfText*)
+  #:wrap (allocator sfText_destroy))
 
 (define-sfml sfText_copy
-  (_fun _sfText* -> _sfText*))
-
-(define-sfml sfText_destroy
-  (_fun _sfText* -> _void))
+  (_fun _sfText* -> _sfText*)
+  #:wrap (allocator sfText_destroy))
 
 (define-sfml sfText_setPosition
   (_fun _sfText* _sfVector2f -> _void))
@@ -1147,26 +1184,33 @@ All rights reserved.
 ;; Texture.h
 ;; ----------------------------------------------------
 
+(define-sfml sfTexture_destroy
+  (_fun _sfTexture* -> _void)
+  #:wrap (deallocator))
+
 (define-sfml sfTexture_create
-  (_fun _uint _uint -> _sfTexture*))
+  (_fun _uint _uint -> _sfTexture*)
+  #:wrap (allocator sfTexture_destroy))
 
 (define-sfml sfTexture_createFromFile
-  (_fun _string (_or-null _sfIntRect-pointer)  -> _sfTexture*))
+  (_fun _string (_or-null _sfIntRect-pointer)  -> _sfTexture*)
+  #:wrap (allocator sfTexture_destroy))
 
 (define-sfml sfTexture_createFromMemory
-  (_fun _pointer _uint (_or-null _sfIntRect-pointer) -> _sfTexture*))
+  (_fun _pointer _uint (_or-null _sfIntRect-pointer) -> _sfTexture*)
+  #:wrap (allocator sfTexture_destroy))
 
 (define-sfml sfTexture_createFromStream
-  (_fun _sfInputStream* (_or-null _sfIntRect-pointer) -> _sfTexture*))
+  (_fun _sfInputStream* (_or-null _sfIntRect-pointer) -> _sfTexture*)
+  #:wrap (allocator sfTexture_destroy))
 
 (define-sfml sfTexture_createFromImage
-  (_fun _sfImage* (_or-null _sfIntRect-pointer) -> _sfTexture*))
+  (_fun _sfImage* (_or-null _sfIntRect-pointer) -> _sfTexture*)
+  #:wrap (allocator sfTexture_destroy))
 
 (define-sfml sfTexture_copy
-  (_fun _sfTexture* -> _sfTexture*))
-
-(define-sfml sfTexture_destroy
-  (_fun _sfTexture* -> _void))
+  (_fun _sfTexture* -> _sfTexture*)
+  #:wrap (allocator sfTexture_destroy))
 
 (define-sfml sfTexture_getSize
   (_fun _sfTexture* -> _sfVector2u))
@@ -1266,14 +1310,17 @@ All rights reserved.
 ;; Transformable.h
 ;; ----------------------------------------------------
 
+(define-sfml sfTransformable_destroy
+  (_fun _sfTransformable* -> _void)
+  #:wrap (deallocator))
+
 (define-sfml sfTransformable_create
-  (_fun -> _sfTransformable*))
+  (_fun -> _sfTransformable*)
+  #:wrap (allocator sfTransformable_destroy))
 
 (define-sfml sfTransformable_copy
-  (_fun _sfTransformable* -> _sfTransformable*))
-
-(define-sfml sfTransformable_destroy
-  (_fun _sfTransformable* -> _void))
+  (_fun _sfTransformable* -> _sfTransformable*)
+  #:wrap (allocator sfTransformable_destroy))
 
 (define-sfml sfTransformable_setPosition
   (_fun _sfTransformable* _sfVector2f -> _void))
@@ -1318,14 +1365,17 @@ All rights reserved.
 ;; VertexArray.h
 ;; ----------------------------------------------------
 
+(define-sfml sfVertexArray_destroy
+  (_fun _sfVertexArray* -> _void)
+  #:wrap (deallocator))
+
 (define-sfml sfVertexArray_create
-  (_fun -> _sfVertexArray*))
+  (_fun -> _sfVertexArray*)
+  #:wrap (allocator sfVertexArray_destroy))
 
 (define-sfml sfVertexArray_copy
-  (_fun _sfVertexArray* -> _sfVertexArray*))
-
-(define-sfml sfVertexArray_destroy
-  (_fun _sfVertexArray* -> _void))
+  (_fun _sfVertexArray* -> _sfVertexArray*)
+  #:wrap (allocator sfVertexArray_destroy))
 
 (define-sfml sfVertexArray_getVertexCount
   (_fun _sfVertexArray* -> _uint))
@@ -1352,14 +1402,17 @@ All rights reserved.
 ;; VertexBuffer.h
 ;; ----------------------------------------------------
 
+(define-sfml sfVertexBuffer_destroy
+  (_fun _sfVertexBuffer* -> _void)
+  #:wrap (deallocator))
+
 (define-sfml sfVertexBuffer_create
-  (_fun _uint _sfPrimitiveType _sfVertexBufferUsage -> _sfVertexBuffer*))
+  (_fun _uint _sfPrimitiveType _sfVertexBufferUsage -> _sfVertexBuffer*)
+  #:wrap (allocator sfVertexBuffer_destroy))
 
 (define-sfml sfVertexBuffer_copy
-  (_fun _sfVertexBuffer* -> _sfVertexBuffer*))
-
-(define-sfml sfVertexBuffer_destroy
-  (_fun _sfVertexBuffer* -> _void))
+  (_fun _sfVertexBuffer* -> _sfVertexBuffer*)
+  #:wrap (allocator sfVertexBuffer_destroy))
 
 (define-sfml sfVertexBuffer_getVertexCount
   (_fun _sfVertexBuffer* -> _uint))
@@ -1398,17 +1451,21 @@ All rights reserved.
 ;; View.h
 ;; ----------------------------------------------------
 
+(define-sfml sfView_destroy
+  (_fun _sfView* -> _void)
+  #:wrap (deallocator))
+
 (define-sfml sfView_create
-  (_fun -> _sfView*))
+  (_fun -> _sfView*)
+  #:wrap (allocator sfView_destroy))
 
 (define-sfml sfView_createFromRect
-  (_fun _sfFloatRect -> _sfView*))
+  (_fun _sfFloatRect -> _sfView*)
+  #:wrap (allocator sfView_destroy))
 
 (define-sfml sfView_copy
-  (_fun _sfView* -> _sfView*))
-
-(define-sfml sfView_destroy
-  (_fun _sfView* -> _void))
+  (_fun _sfView* -> _sfView*)
+  #:wrap (allocator sfView_destroy))
 
 (define-sfml sfView_setCenter
   (_fun _sfView* _sfVector2f -> _void))

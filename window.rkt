@@ -11,6 +11,7 @@ All rights reserved.
 |#
 
 (require ffi/unsafe)
+(require ffi/unsafe/alloc)
 (require ffi/unsafe/define)
 
 ;; ----------------------------------------------------
@@ -44,11 +45,13 @@ All rights reserved.
 ;; Context.h
 ;; ----------------------------------------------------
 
-(define-sfml sfContext_create
-  (_fun -> _sfContext*))
-
 (define-sfml sfContext_destroy
-  (_fun _sfContext* -> _void))
+  (_fun _sfContext* -> _void)
+  #:wrap (deallocator))
+
+(define-sfml sfContext_create
+  (_fun -> _sfContext*)
+  #:wrap (allocator sfContext_destroy))
 
 (define-sfml sfContext_setActive
   (_fun _sfContext* _bool -> _bool))
@@ -157,11 +160,13 @@ All rights reserved.
 ;; Window.h
 ;; ----------------------------------------------------
 
-(define-sfml sfWindow_create
-  (_fun _sfVideoMode _string _sfWindowStyle (_or-null _sfContextSettings*) -> _sfWindow*))
-
 (define-sfml sfWindow_destroy
-  (_fun _sfWindow* -> _void))
+  (_fun _sfWindow* -> _void)
+  #:wrap (deallocator))
+
+(define-sfml sfWindow_create
+  (_fun _sfVideoMode _string _sfWindowStyle (_or-null _sfContextSettings*) -> _sfWindow*)
+  #:wrap (allocator sfWindow_destroy))
 
 (define-sfml sfWindow_close
   (_fun _sfWindow* -> _void))
