@@ -356,7 +356,7 @@ All rights reserved.
 ;; ----------------------------------------------------
 
 (define-sfml sfImage_destroy
-  (_fun _sfImage* -> _sfImage*)
+  (_fun _sfImage* -> _void)
   #:wrap (deallocator))
 
 (define-sfml sfImage_create
