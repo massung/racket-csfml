@@ -1,6 +1,5 @@
 #lang racket
 
-
 #|
 
 CSFML Wrapper for Racket
