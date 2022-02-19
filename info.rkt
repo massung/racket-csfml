@@ -4,5 +4,5 @@
 (define pkg-authors '("massung@gmail.com"))
 (define version "1.0")
 (define pkg-desc "FFI bindings for the CSFML library")
-(define deps '("base"))
+(define deps '("base" "csfml-libs"))
 (define compile-omit-paths '("examples"))
