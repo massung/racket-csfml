@@ -1236,9 +1236,6 @@ All rights reserved.
 (define-sfml sfTexture_isSmooth
   (_fun _sfTexture* -> _bool))
 
-(define-sfml sfTexture_setSrgb
-  (_fun _sfTexture* _bool -> _void))
-
 (define-sfml sfTexture_isSrgb
   (_fun _sfTexture* -> _bool))
 
