@@ -6,11 +6,11 @@ Creating a shape and rendering it.
 
 |#
 
-(require csfml)
+(require "../main.rkt")
 
 ;; create the main window
 (define mode (make-sfVideoMode 640 480 32))
-(define window (sfRenderWindow_create mode "Example" '(sfDefaultStyle) #f))
+(define window (sfRenderWindow_create mode "Example" '(sfDefaultStyle) 'sfWindowed #f))
 
 ;; create a circle shape
 (define circle (sfCircleShape_create))

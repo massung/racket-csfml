@@ -4,7 +4,7 @@
 
 CSFML Wrapper for Racket
 
-Copyright (c) 2020 by Jeffrey Massung
+Copyright (c) 2025 by Jeffrey Massung
 All rights reserved.
 
 |#
@@ -17,9 +17,9 @@ All rights reserved.
 
 (define-ffi-definer define-sfml
   (ffi-lib (case (system-type 'os)
-             ('windows "csfml-graphics-2")
-             ('unix "libcsfml-graphics")
-             ('macosx "libcsfml-graphics"))))
+             ('windows "csfml-graphics-2.dll")
+             ('unix "libcsfml-graphics.so.2.6.1")
+             ('macosx "libcsfml-graphics.2.6.1.dylib"))))
 
 ;; ----------------------------------------------------
 
@@ -76,6 +76,10 @@ All rights reserved.
 
 (define-sfml sfCircleShape_create
   (_fun -> _sfCircleShape*)
+  #:wrap (allocator sfCircleShape_destroy))
+
+(define-sfml sfCircleShape_copy
+  (_fun _sfCircleShape* -> _sfCircleShape*)
   #:wrap (allocator sfCircleShape_destroy))
 
 (define-sfml sfCircleShape_setPosition
@@ -218,7 +222,8 @@ All rights reserved.
   #:wrap (allocator sfConvexShape_destroy))
 
 (define-sfml sfConvexShape_copy
-  (_fun _sfConvexShape* -> _sfConvexShape*))
+  (_fun _sfConvexShape* -> _sfConvexShape*)
+  #:wrap (allocator sfConvexShape_destroy))
 
 (define-sfml sfConvexShape_setPosition
   (_fun _sfConvexShape* _sfVector2f -> _void))
@@ -316,7 +321,7 @@ All rights reserved.
   #:wrap (deallocator))
 
 (define-sfml sfFont_createFromFile
-  (_fun _string -> _sfFont*)
+  (_fun _path -> _sfFont*)
   #:wrap (allocator sfFont_destroy))
 
 (define-sfml sfFont_createFromMemory
@@ -328,12 +333,16 @@ All rights reserved.
   #:wrap (allocator sfFont_destroy))
 
 (define-sfml sfFont_copy
-  (_fun _sfFont* -> _sfFont*))
+  (_fun _sfFont* -> _sfFont*)
+  #:wrap (allocator sfFont_destroy))
 
 (define-sfml sfFont_getGlyph
   (_fun _sfFont* _uint32 _uint _bool _float -> _sfGlyph))
 
 (define-sfml sfFont_getKerning
+  (_fun _sfFont* _uint32 _uint32 _uint -> _float))
+
+(define-sfml sfFont_getBoldKerning
   (_fun _sfFont* _uint32 _uint32 _uint -> _float))
 
 (define-sfml sfFont_getLineSpacing
@@ -347,6 +356,12 @@ All rights reserved.
 
 (define-sfml sfFont_getTexture
   (_fun _sfFont* _uint -> _sfTexture*))
+
+(define-sfml sfFont_setSmooth
+  (_fun _sfFont* _bool -> _void))
+
+(define-sfml sfFont_isSmooth
+  (_fun _sfFont* -> _bool))
 
 (define-sfml sfFont_getInfo
   (_fun _sfFont* -> _sfFontInfo))
@@ -372,7 +387,7 @@ All rights reserved.
   #:wrap (allocator sfImage_destroy))
 
 (define-sfml sfImage_createFromFile
-  (_fun _string -> _sfImage*)
+  (_fun _path -> _sfImage*)
   #:wrap (allocator sfImage_destroy))
 
 (define-sfml sfImage_createFromMemory
@@ -390,6 +405,9 @@ All rights reserved.
 (define-sfml sfImage_saveToFile
   (_fun _sfImage* _string -> _bool))
 
+(define-sfml sfImage_saveToMemory
+  (_fun _sfImage* _pointer _string -> _bool))
+
 (define-sfml sfImage_getSize
   (_fun _sfImage* -> _sfVector2u))
 
@@ -397,7 +415,7 @@ All rights reserved.
   (_fun _sfImage* _sfColor _byte -> _void))
 
 (define-sfml sfImage_copyImage
-  (_fun _sfImage* _sfImage* _uint _uint _sfIntRect _bool -> _void))
+  (_fun _sfImage* _sfImage* _sfVector2u _sfIntRect _bool -> _bool))
 
 (define-sfml sfImage_setPixel
   (_fun _sfImage* _uint _uint _sfColor -> _void))
@@ -548,6 +566,9 @@ All rights reserved.
 (define-sfml sfRenderTexture_getSize
   (_fun _sfRenderTexture* -> _sfVector2u))
 
+(define-sfml sfRenderTexture_isSrgb
+  (_fun _sfRenderTexture* -> _bool))
+
 (define-sfml sfRenderTexture_setActive
   (_fun _sfRenderTexture* _bool -> _void))
 
@@ -599,6 +620,9 @@ All rights reserved.
 (define-sfml sfRenderTexture_drawVertexBuffer
   (_fun _sfRenderTexture* _sfVertexBuffer* (_or-null _sfRenderStates*) -> _void))
 
+(define-sfml sfRenderTexture_drawVertexBufferRange
+  (_fun _sfRenderTexture* _sfVertexBuffer* _uint _uint (_or-null _sfRenderStates*) -> _void))
+
 (define-sfml sfRenderTexture_drawPrimitives
   (_fun _sfRenderTexture* _sfVertex-pointer _uint _sfPrimitiveType (_or-null _sfRenderStates*) -> _void))
 
@@ -638,7 +662,14 @@ All rights reserved.
   #:wrap (deallocator))
 
 (define-sfml sfRenderWindow_create
-  (_fun _sfVideoMode _string _sfWindowStyle (_or-null _sfContextSettings*) -> _sfRenderWindow*)
+  (_fun _sfVideoMode _string _sfWindowStyle _sfWindowState (_or-null _sfContextSettings*) -> _sfRenderWindow*)
+  #:wrap (allocator sfRenderWindow_destroy))
+
+(define-sfml sfRenderWindow_createUnicode
+  (_fun _sfVideoMode _string/utf-16 _sfWindowStyle _sfWindowState (_or-null _sfContextSettings*) -> _sfRenderWindow*))
+
+(define-sfml sfRenderWindow_createFromHandle
+  (_fun _sfWindowHandle (_or-null _sfContextSettings*) -> _sfRenderWindow*)
   #:wrap (allocator sfRenderWindow_destroy))
 
 (define-sfml sfRenderWindow_close
@@ -665,14 +696,20 @@ All rights reserved.
 (define-sfml sfRenderWindow_getSize
   (_fun _sfRenderWindow* -> _sfVector2u))
 
+(define-sfml sfRenderWindow_isSrgb
+  (_fun _sfRenderWindow* -> _bool))
+
 (define-sfml sfRenderWindow_setSize
   (_fun _sfRenderWindow* _sfVector2u -> _void))
 
 (define-sfml sfRenderWindow_setTitle
   (_fun _sfRenderWindow* _string -> _void))
 
+(define-sfml sfRenderWindow_setUnicodeTitle
+  (_fun _sfRenderWindow* _string/utf-16 -> _void))
+
 (define-sfml sfRenderWindow_setIcon
-  (_fun _sfRenderWindow* _uint _uint _pointer -> _void))
+  (_fun _sfRenderWindow* _sfVector2u _pointer -> _void))
 
 (define-sfml sfRenderWindow_setVisible
   (_fun _sfRenderWindow* _bool -> _void))
@@ -723,7 +760,7 @@ All rights reserved.
   (_fun _sfRenderWindow* -> _sfView*))
 
 (define-sfml sfRenderWindow_getViewport
-  (_fun _sfRenderWindow* -> _sfIntRect))
+  (_fun _sfRenderWindow* _sfView* -> _sfIntRect))
 
 (define-sfml sfRenderWindow_mapPixelToCoords
   (_fun _sfRenderWindow* _sfVector2i (_or-null _sfView*) -> _sfVector2f))
@@ -755,6 +792,9 @@ All rights reserved.
 (define-sfml sfRenderWindow_drawVertexBuffer
   (_fun _sfRenderWindow* _sfVertexBuffer* (_or-null _sfRenderStates*) -> _void))
 
+(define-sfml sfRenderWindow_drawVertexBufferRange
+  (_fun _sfRenderWindow* _sfVertexBuffer* _uint _uint (_or-null _sfRenderStates*) -> _void))
+
 (define-sfml sfRenderWindow_drawPrimitives
   (_fun _sfRenderWindow* _sfVertex-pointer _uint _sfPrimitiveType (_or-null _sfRenderStates*) -> _void))
 
@@ -766,10 +806,6 @@ All rights reserved.
 
 (define-sfml sfRenderWindow_resetGLStates
   (_fun _sfRenderWindow* -> _void))
-
-(define-sfml sfRenderWindow_capture
-  (_fun _sfRenderWindow* -> _sfImage*)
-  #:wrap (allocator sfImage_destroy))
 
 (define-sfml sfMouse_getPositionRenderWindow
   (_fun _sfRenderWindow* -> _sfVector2i))
@@ -789,7 +825,7 @@ All rights reserved.
   #:wrap (deallocator))
 
 (define-sfml sfShader_createFromFile
-  (_fun _string _string _string -> (_or-null _sfShader*))
+  (_fun _path _path _path -> (_or-null _sfShader*))
   #:wrap (allocator sfShader_destroy))
 
 (define-sfml sfShader_createFromMemory
@@ -1084,6 +1120,9 @@ All rights reserved.
 (define-sfml sfText_setScale
   (_fun _sfText* _sfVector2f -> _void))
 
+(define-sfml sfText_setOrigin
+  (_fun _sfText* _sfVector2f -> _void))
+
 (define-sfml sfText_getPosition
   (_fun _sfText* -> _sfVector2f))
 
@@ -1129,9 +1168,6 @@ All rights reserved.
 (define-sfml sfText_setStyle
   (_fun _sfText* _uint32 -> _void))
 
-(define-sfml sfText_setColor
-  (_fun _sfText* _sfColor -> _void))
-
 (define-sfml sfText_setFillColor
   (_fun _sfText* _sfColor -> _void))
 
@@ -1143,6 +1179,9 @@ All rights reserved.
 
 (define-sfml sfText_getString
   (_fun _sfText* -> _string))
+
+(define-sfml sfText_getUnicodeString
+  (_fun _sfText* -> _string/utf-16))
 
 (define-sfml sfText_getFont
   (_fun _sfText* -> _sfFont*))
@@ -1189,18 +1228,30 @@ All rights reserved.
   #:wrap (deallocator))
 
 (define-sfml sfTexture_create
-  (_fun _uint _uint -> _sfTexture*)
+  (_fun _sfVector2u -> _sfTexture*)
   #:wrap (allocator sfTexture_destroy))
 
 (define-sfml sfTexture_createFromFile
-  (_fun _string (_or-null _sfIntRect-pointer)  -> _sfTexture*)
+  (_fun _path (_or-null _sfIntRect-pointer)  -> _sfTexture*)
+  #:wrap (allocator sfTexture_destroy))
+
+(define-sfml sfTexture_createSrgbFromFile
+  (_fun _path (_or-null _sfIntRect-pointer)  -> _sfTexture*)
   #:wrap (allocator sfTexture_destroy))
 
 (define-sfml sfTexture_createFromMemory
   (_fun _pointer _uint (_or-null _sfIntRect-pointer) -> _sfTexture*)
   #:wrap (allocator sfTexture_destroy))
 
+(define-sfml sfTexture_createSrgbFromMemory
+  (_fun _pointer _uint (_or-null _sfIntRect-pointer) -> _sfTexture*)
+  #:wrap (allocator sfTexture_destroy))
+
 (define-sfml sfTexture_createFromStream
+  (_fun _sfInputStream* (_or-null _sfIntRect-pointer) -> _sfTexture*)
+  #:wrap (allocator sfTexture_destroy))
+
+(define-sfml sfTexture_createSrgbFromStream
   (_fun _sfInputStream* (_or-null _sfIntRect-pointer) -> _sfTexture*)
   #:wrap (allocator sfTexture_destroy))
 
@@ -1219,25 +1270,25 @@ All rights reserved.
   (_fun _sfTexture* -> _sfImage*))
 
 (define-sfml sfTexture_updateFromPixels
-  (_fun _sfTexture* _pointer _uint _uint _uint _uint -> _void))
+  (_fun _sfTexture* _pointer _sfVector2u _sfVector2u -> _void))
+
+(define-sfml sfTexture_updateFromTexture
+  (_fun _sfTexture* _sfTexture* _sfVector2u _sfVector2u -> _void))
 
 (define-sfml sfTexture_updateFromImage
-  (_fun _sfTexture* _sfImage* _uint _uint -> _void))
+  (_fun _sfTexture* _sfImage* _sfVector2u -> _void))
 
 (define-sfml sfTexture_updateFromWindow
-  (_fun _sfTexture* _sfWindow* _uint _uint -> _void))
+  (_fun _sfTexture* _sfWindow* _sfVector2u -> _void))
 
 (define-sfml sfTexture_updateFromRenderWindow
-  (_fun _sfTexture* _sfRenderWindow* _uint _uint -> _void))
+  (_fun _sfTexture* _sfRenderWindow* _sfVector2u -> _void))
 
 (define-sfml sfTexture_setSmooth
   (_fun _sfTexture* _bool -> _void))
 
 (define-sfml sfTexture_isSmooth
   (_fun _sfTexture* -> _bool))
-
-(define-sfml sfTexture_setSrgb
-  (_fun _sfTexture* _bool -> _void))
 
 (define-sfml sfTexture_isSrgb
   (_fun _sfTexture* -> _bool))
@@ -1395,6 +1446,9 @@ All rights reserved.
 (define-sfml sfVertexArray_setPrimitiveType
   (_fun _sfVertexArray* _sfPrimitiveType -> _void))
 
+(define-sfml sfVertexArray_getPrimitiveType
+  (_fun _sfVertexArray* -> _sfPrimitiveType))
+
 (define-sfml sfVertexArray_getBounds
   (_fun _sfVertexArray* -> _sfFloatRect))
 
@@ -1479,10 +1533,10 @@ All rights reserved.
 (define-sfml sfView_setViewport
   (_fun _sfView* _sfFloatRect -> _void))
 
-(define-sfml sfView_reset
-  (_fun _sfView* _sfFloatRect -> _void))
-
 (define-sfml sfView_getCenter
+  (_fun _sfView* -> _sfVector2f))
+
+(define-sfml sfView_getSize
   (_fun _sfView* -> _sfVector2f))
 
 (define-sfml sfView_getRotation

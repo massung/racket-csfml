@@ -4,7 +4,7 @@
 
 CSFML Wrapper for Racket
 
-Copyright (c) 2020 by Jeffrey Massung
+Copyright (c) 2025 by Jeffrey Massung
 All rights reserved.
 
 |#
@@ -17,9 +17,9 @@ All rights reserved.
 
 (define-ffi-definer define-sfml
   (ffi-lib (case (system-type 'os)
-             ('windows "csfml-audio-2")
-             ('unix "libcsfml-audio")
-             ('macosx "libcsfml-audio"))))
+             ('windows "csfml-audio-2.dll")
+             ('unix "libcsfml-audio.so.2.6.1")
+             ('macosx "libcsfml-audio.2.6.1.dylib"))))
 
 ;; ----------------------------------------------------
 
@@ -39,6 +39,9 @@ All rights reserved.
 
 (define-sfml sfListener_getGlobalVolume
   (_fun -> _float))
+
+(define-sfml sfListener_setPosition
+  (_fun _sfVector3f -> _void))
 
 (define-sfml sfListener_getPosition
   (_fun -> _sfVector3f))
@@ -64,7 +67,7 @@ All rights reserved.
   #:wrap (deallocator))
 
 (define-sfml sfMusic_createFromFile
-  (_fun _string -> _sfMusic*)
+  (_fun _path -> _sfMusic*)
   #:wrap (allocator sfMusic_destroy))
 
 (define-sfml sfMusic_createFromMemory
@@ -214,6 +217,9 @@ All rights reserved.
 (define-sfml sfSound_getPitch
   (_fun _sfSound* -> _float))
 
+(define-sfml sfSound_getPosition
+  (_fun _sfSound* -> _sfVector3f))
+
 (define-sfml sfSound_getVolume
   (_fun _sfSound* -> _float))
 
@@ -238,7 +244,7 @@ All rights reserved.
   #:wrap (deallocator))
 
 (define-sfml sfSoundBuffer_createFromFile
-  (_fun _string -> _sfSoundBuffer*)
+  (_fun _path -> _sfSoundBuffer*)
   #:wrap (allocator sfSoundBuffer_destroy))
 
 (define-sfml sfSoundBuffer_createFromMemory
@@ -258,7 +264,7 @@ All rights reserved.
   #:wrap (allocator sfSoundBuffer_destroy))
 
 (define-sfml sfSoundBuffer_saveToFile
-  (_fun _sfSoundBuffer* _string -> _bool))
+  (_fun _sfSoundBuffer* _path -> _bool))
 
 (define-sfml sfSoundBuffer_getSamples
   (_fun _sfSoundBuffer* -> (_ptr o _sint16)))

@@ -4,7 +4,7 @@
 
 CSFML Wrapper for Racket
 
-Copyright (c) 2020 by Jeffrey Massung
+Copyright (c) 2025 by Jeffrey Massung
 All rights reserved.
 
 |#
@@ -17,9 +17,9 @@ All rights reserved.
 
 (define-ffi-definer define-sfml
   (ffi-lib (case (system-type 'os)
-             ('windows "csfml-system-2")
-             ('unix "libcsfml-system")
-             ('macosx "libcsfml-system"))))
+             ('windows "csfml-system-2.dll")
+             ('unix "libcsfml-system.so.2.6.1")
+             ('macosx "libcsfml-system.2.6.1.dylib"))))
 
 ;; ----------------------------------------------------
 
@@ -43,7 +43,8 @@ All rights reserved.
   #:wrap (allocator sfClock_destroy))
 
 (define-sfml sfClock_copy
-  (_fun _sfClock* -> _sfClock*))
+  (_fun _sfClock* -> _sfClock*)
+  #:wrap (allocator sfClock_destroy))
 
 (define-sfml sfClock_getElapsedTime
   (_fun _sfClock* -> _sfTime))
@@ -52,50 +53,11 @@ All rights reserved.
   (_fun _sfClock* -> _sfTime))
 
 ;; ----------------------------------------------------
-;; Mutex.h
-;; ----------------------------------------------------
-
-(define-sfml sfMutex_destroy
-  (_fun _sfMutex* -> _void)
-  #:wrap (deallocator))
-
-(define-sfml sfMutex_create
-  (_fun -> _sfMutex*)
-  #:wrap (allocator sfMutex_destroy))
-
-(define-sfml sfMutex_lock
-  (_fun _sfMutex* -> _void))
-
-(define-sfml sfMutex_unlock
-  (_fun _sfMutex* -> _void))
-
-;; ----------------------------------------------------
 ;; Sleep.h
 ;; ----------------------------------------------------
 
 (define-sfml sfSleep
   (_fun _sfTime -> _void))
-
-;; ----------------------------------------------------
-;; Thread.h
-;; ----------------------------------------------------
-
-(define-sfml sfThread_destroy
-  (_fun _sfThread* -> _void)
-  #:wrap (deallocator))
-
-(define-sfml sfThread_create
-  (_fun (_fun _pointer -> _void) _pointer -> _sfThread*)
-  #:wrap (allocator sfThread_destroy))
-
-(define-sfml sfThread_launch
-  (_fun _sfThread* -> _void))
-
-(define-sfml sfThread_wait
-  (_fun _sfThread* -> _void))
-
-(define-sfml sfThread_terminate
-  (_fun _sfThread* -> _void))
 
 ;; ----------------------------------------------------
 ;; Time.h

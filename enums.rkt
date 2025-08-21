@@ -4,7 +4,7 @@
 
 CSFML Wrapper for Racket
 
-Copyright (c) 2020 by Jeffrey Massung
+Copyright (c) 2025 by Jeffrey Massung
 All rights reserved.
 
 |#
@@ -46,6 +46,14 @@ All rights reserved.
            sfBlendEquationReverseSubtract)))
 
 ;; ----------------------------------------------------
+;; Graphics/CoordinateType.h
+;; ----------------------------------------------------
+
+(define _sfCoordinateType
+  (_enum '(sfCoordinateTypeNormalized
+           sfCoordinateTypePixels)))
+
+;; ----------------------------------------------------
 ;; Graphics/PrimitiveType.h
 ;; ----------------------------------------------------
 
@@ -57,6 +65,28 @@ All rights reserved.
            sfTriangleStrip
            sfTriangleFan
            sfQuads)))
+
+;; ----------------------------------------------------
+;; Graphics/StencilMode.h
+;; ----------------------------------------------------
+
+(define _sfStencilComparison
+  (_enum '(sfStencilComparisonNever
+           sfStencilComparisonLess
+           sfStencilComparisonLessEqual
+           sfStencilComparisonGreater
+           sfStencilComparisonGreaterEqual
+           sfStencilComparisonEqual
+           sfStencilComparisonNotEqual
+           sfStencilComparisonAlways )))
+
+(define _sfStencilUpdateOperation
+  (_enum '(sfStencilUpdateOperationKeep
+           sfStencilUpdateOperationZero
+           sfStencilUpdateOperationReplace
+           sfStencilUpdateOperationIncrement
+           sfStencilUpdateOperationDecrement
+           sfStencilUpdateOperationInvert)))
 
 ;; ----------------------------------------------------
 ;; Graphics/Text.h
@@ -77,6 +107,14 @@ All rights reserved.
   (_enum '(sfVertexBufferStream
            sfVertexBufferDynamic
            sfVertexBufferStatic)))
+
+;; ----------------------------------------------------
+;; Graphics/WindowBase.h
+;; ----------------------------------------------------
+
+(define _sfWindowState
+  (_enum '(sfWindowed
+           sfFullscreen)))
 
 ;; ----------------------------------------------------
 ;; Network/Ftp.h
@@ -363,6 +401,155 @@ All rights reserved.
            sfKeyF15
            sfKeyPause
            sfKeyCount)))
+
+(define _sfScancode
+  (_enum '(sfScanUnknown = -1
+           sfScanA
+           sfScanB
+           sfScanC
+           sfScanD
+           sfScanE
+           sfScanF
+           sfScanG
+           sfScanH
+           sfScanI
+           sfScanJ
+           sfScanK
+           sfScanL
+           sfScanM
+           sfScanN
+           sfScanO
+           sfScanP
+           sfScanQ
+           sfScanR
+           sfScanS
+           sfScanT
+           sfScanU
+           sfScanV
+           sfScanW
+           sfScanX
+           sfScanY
+           sfScanZ
+           sfScanNum1
+           sfScanNum2
+           sfScanNum3
+           sfScanNum4
+           sfScanNum5
+           sfScanNum6
+           sfScanNum7
+           sfScanNum8
+           sfScanNum9
+           sfScanNum0
+           sfScanEnter
+           sfScanEscape
+           sfScanBackspace
+           sfScanTab
+           sfScanSpace
+           sfScanHyphen
+           sfScanEqual
+           sfScanLBracket
+           sfScanRBracket
+           sfScanBackslash
+           sfScanSemicolon
+           sfScanApostrophe
+           sfScanGrave
+           sfScanComma
+           sfScanPeriod
+           sfScanSlash
+           sfScanF1
+           sfScanF2
+           sfScanF3
+           sfScanF4
+           sfScanF5
+           sfScanF6
+           sfScanF7
+           sfScanF8
+           sfScanF9
+           sfScanF10
+           sfScanF11
+           sfScanF12
+           sfScanF13
+           sfScanF14
+           sfScanF15
+           sfScanF16
+           sfScanF17
+           sfScanF18
+           sfScanF19
+           sfScanF20
+           sfScanF21
+           sfScanF22
+           sfScanF23
+           sfScanF24
+           sfScanCapsLock
+           sfScanPrintScreen
+           sfScanScrollLock
+           sfScanPause
+           sfScanInsert
+           sfScanHome
+           sfScanPageUp
+           sfScanDelete
+           sfScanEnd
+           sfScanPageDown
+           sfScanRight
+           sfScanLeft
+           sfScanDown
+           sfScanUp
+           sfScanNumLock
+           sfScanNumpadDivide
+           sfScanNumpadMultiply
+           sfScanNumpadMinus
+           sfScanNumpadPlus
+           sfScanNumpadEqual
+           sfScanNumpadEnter
+           sfScanNumpadDecimal
+           sfScanNumpad1
+           sfScanNumpad2
+           sfScanNumpad3
+           sfScanNumpad4
+           sfScanNumpad5
+           sfScanNumpad6
+           sfScanNumpad7
+           sfScanNumpad8
+           sfScanNumpad9
+           sfScanNumpad0
+           sfScanNonUsBackslash
+           sfScanApplication
+           sfScanExecute
+           sfScanModeChange
+           sfScanHelp
+           sfScanMenu
+           sfScanSelect
+           sfScanRedo
+           sfScanUndo
+           sfScanCut
+           sfScanCopy
+           sfScanPaste
+           sfScanVolumeMute
+           sfScanVolumeUp
+           sfScanVolumeDown
+           sfScanMediaPlayPause
+           sfScanMediaStop
+           sfScanMediaNextTrack
+           sfScanMediaPreviousTrack
+           sfScanLControl
+           sfScanLShift
+           sfScanLAlt
+           sfScanLSystem
+           sfScanRControl
+           sfScanRShift
+           sfScanRAlt
+           sfScanRSystem
+           sfScanBack
+           sfScanForward
+           sfScanRefresh
+           sfScanStop
+           sfScanSearch
+           sfScanFavorites
+           sfScanHomePage
+           sfScanLaunchApplication1
+           sfScanLaunchApplication2
+           sfScanLaunchMail
+           sfScanLaunchMediaSelect)))
 
 ;; ----------------------------------------------------
 ;; Window/Mouse.h

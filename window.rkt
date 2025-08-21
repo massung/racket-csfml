@@ -5,7 +5,7 @@
 
 CSFML Wrapper for Racket
 
-Copyright (c) 2020 by Jeffrey Massung
+Copyright (c) 2025 by Jeffrey Massung
 All rights reserved.
 
 |#
@@ -18,9 +18,9 @@ All rights reserved.
 
 (define-ffi-definer define-sfml
   (ffi-lib (case (system-type 'os)
-             ('windows "csfml-window-2")
-             ('unix "libcsfml-window")
-             ('macosx "libcsfml-window"))))
+             ('windows "csfml-window-2.dll")
+             ('unix "libcsfml-window.so.2.6.1")
+             ('macosx "libcsfml-window.2.6.1.dylib"))))
 
 ;; ----------------------------------------------------
 
@@ -38,8 +38,14 @@ All rights reserved.
 (define-sfml sfClipboard_getString
   (_fun -> _string))
 
+(define-sfml sfClipboard_getUnicodeString
+  (_fun -> _string/utf-16))
+
 (define-sfml sfClipboard_setString
   (_fun _string -> _void))
+
+(define-sfml sfClipboard_setUnicodeString
+  (_fun _string/utf-16 -> _void))
 
 ;; ----------------------------------------------------
 ;; Context.h
@@ -53,8 +59,14 @@ All rights reserved.
   (_fun -> _sfContext*)
   #:wrap (allocator sfContext_destroy))
 
+(define-sfml sfContext_isExtensionAvailable
+  (_fun _sfContext* _string -> _bool))
+
 (define-sfml sfContext_setActive
   (_fun _sfContext* _bool -> _bool))
+
+(define-sfml sfContext_getSettings
+  (_fun _sfContext* -> _sfContextSettings))
 
 (define-sfml sfContext_getActiveContextId
   (_fun -> _uint64))
@@ -63,14 +75,17 @@ All rights reserved.
 ;; Cursor.h
 ;; ----------------------------------------------------
 
+(define-sfml sfCursor_destroy
+  (_fun _sfCursor* -> _void)
+  #:wrap (deallocator))
+
 (define-sfml sfCursor_createFromPixels
-  (_fun (_ptr i _uint8) _sfVector2u _sfVector2u -> _sfCursor*))
+  (_fun (_ptr i _uint8) _sfVector2u _sfVector2u -> _sfCursor*)
+  #:wrap (allocator sfCursor_destroy))
 
 (define-sfml sfCursor_createFromSystem
-  (_fun _sfCursorType -> _sfCursor*))
-
-(define-sfml sfCursor_destroy
-  (_fun _sfCursor* -> _void))
+  (_fun _sfCursorType -> _sfCursor*)
+  #:wrap (allocator sfCursor_destroy))
 
 ;; ----------------------------------------------------
 ;; Joystick.h
@@ -103,6 +118,18 @@ All rights reserved.
 
 (define-sfml sfKeyboard_isKeyPressed
   (_fun _sfKeyCode -> _bool))
+
+(define-sfml sfKeyboard_isScancodePressed
+  (_fun _sfScancode -> _bool))
+
+(define-sfml sfKeyboard_localize
+  (_fun _sfScancode -> _sfKeyCode))
+
+(define-sfml sfKeyboard_delocalize
+  (_fun _sfKeyCode -> _sfScancode))
+
+(define-sfml sfKeyboard_getDescription
+  (_fun _sfScancode -> _string))
 
 (define-sfml sfKeyboard_setVirtualKeyboardVisible
   (_fun _bool -> _void))
@@ -168,6 +195,10 @@ All rights reserved.
   (_fun _sfVideoMode _string _sfWindowStyle (_or-null _sfContextSettings*) -> _sfWindow*)
   #:wrap (allocator sfWindow_destroy))
 
+(define-sfml sfWindow_createUnicode
+  (_fun _sfVideoMode _string/utf-16 _sfWindowStyle _sfWindowState (_or-null _sfContextSettings*) -> _sfWindow*)
+  #:wrap (allocator sfWindow_destroy))
+
 (define-sfml sfWindow_close
   (_fun _sfWindow* -> _void))
 
@@ -198,6 +229,9 @@ All rights reserved.
 (define-sfml sfWindow_setTitle
   (_fun _sfWindow* _string -> _void))
 
+(define-sfml sfWindow_setUnicodeTitle
+  (_fun _sfWindow* _string/utf-16 -> _void))
+
 (define-sfml sfWindow_setIcon
   (_fun _sfWindow* _uint _uint (_ptr i _uint8) -> _void))
 
@@ -227,6 +261,9 @@ All rights reserved.
 
 (define-sfml sfWindow_setActive
   (_fun _sfWindow* _bool -> _void))
+
+(define-sfml sfWindow_requestFocus
+  (_fun _sfWindow* -> _void))
 
 (define-sfml sfWindow_hasFocus
   (_fun _sfWindow* -> _bool))

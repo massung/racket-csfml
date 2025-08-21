@@ -8,7 +8,7 @@ the escape key is pressed.
 
 |#
 
-(require csfml)
+(require "../main.rkt")
 
 ;; recursively process all events for a window
 (define (process-events window)
@@ -24,7 +24,7 @@ the escape key is pressed.
 
 ;; render the contents of the window
 (define (render window)
-  (sfRenderWindow_clear window sfRed)
+  (sfRenderWindow_clear window sfBlue)
   (sfRenderWindow_display window))
 
 ;; loop forever until the window is closed
@@ -38,7 +38,7 @@ the escape key is pressed.
 
 ;; create the main window
 (define mode (make-sfVideoMode 640 480 32))
-(define window (sfRenderWindow_create mode "Example" '(sfDefaultStyle) #f))
+(define window (sfRenderWindow_create mode "Example" '(sfDefaultStyle) 'sfWindowed #f))
 
 ;; run
 (run-loop window)

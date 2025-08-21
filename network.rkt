@@ -4,7 +4,7 @@
 
 CSFML Wrapper for Racket
 
-Copyright (c) 2020 by Jeffrey Massung
+Copyright (c) 2025 by Jeffrey Massung
 All rights reserved.
 
 |#
@@ -17,9 +17,9 @@ All rights reserved.
 
 (define-ffi-definer define-sfml
   (ffi-lib (case (system-type 'os)
-             ('windows "csfml-network-2")
-             ('unix "libcsfml-network")
-             ('macosx "libcsfml-network"))))
+             ('windows "csfml-network-2.dll")
+             ('unix "libcsfml-network.so.2.6.1")
+             ('macosx "libcsfml-network.2.6.1.dylib"))))
 
 ;; ----------------------------------------------------
 

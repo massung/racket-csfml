@@ -6,7 +6,7 @@ This example creates a sfWindow and immediately closes it.
 
 |#
 
-(require csfml)
+(require "../main.rkt")
 
 ;; define the size and bit depth of the window
 (define mode (make-sfVideoMode 640 480 32))
@@ -14,5 +14,5 @@ This example creates a sfWindow and immediately closes it.
 ;; create the window
 (define window (sfWindow_create mode "Example" '(sfDefaultStyle) #f))
 
-;; destroy the window
-(sfWindow_destroy window)
+;; close the window
+(sfWindow_close window)

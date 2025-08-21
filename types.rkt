@@ -4,7 +4,7 @@
 
 CSFML Wrapper for Racket
 
-Copyright (c) 2020 by Jeffrey Massung
+Copyright (c) 2025 by Jeffrey Massung
 All rights reserved.
 
 |#
@@ -123,6 +123,13 @@ All rights reserved.
    [top _int]
    [width _int]
    [height _int]))
+
+;; ----------------------------------------------------
+;; Audio/EffecdtProcessor.h
+;; ----------------------------------------------------
+
+(define _sfEffectProcessor
+  (_fun _pointer _pointer _pointer _pointer _uint -> _void))
 
 ;; ----------------------------------------------------
 ;; Audio/SoundStream.h
@@ -262,6 +269,20 @@ All rights reserved.
    [shader (_or-null _sfShader*)]))
 
 ;; ----------------------------------------------------
+;; Graphics/StencilMode.h
+;; ----------------------------------------------------
+
+(define-cstruct _sfStencilValue
+  ([value _uint]))
+
+(define-cstruct _sfStencilMode
+  ([stencilComparison _sfStencilComparison]
+   [stencilUpdateOperation _sfStencilUpdateOperation]
+   [stencilReference _sfStencilValue]
+   [stencilMask _sfStencilValue]
+   [stencilOnly _bool]))
+
+;; ----------------------------------------------------
 ;; Graphics/Vertex.h
 ;; ----------------------------------------------------
 
@@ -345,6 +366,7 @@ All rights reserved.
 (define-cstruct _sfKeyEvent
   ([type _sfEventType]
    [code _sfKeyCode]
+   [scancode _sfScancode]
    [alt _bool]
    [control _bool]
    [shift _bool]
@@ -358,6 +380,12 @@ All rights reserved.
 
 (define-cstruct _sfMouseMoveEvent
   ([type _sfEventType]
+   [x _int]
+   [y _int]))
+
+(define-cstruct _sfMouseWheelEvent
+  ([type _sfEventType]
+   [delta _int]
    [x _int]
    [y _int]))
 
@@ -399,6 +427,7 @@ All rights reserved.
    _sfKeyEvent
    _sfMouseButtonEvent
    _sfMouseMoveEvent
+   _sfMouseWheelEvent
    _sfMouseWheelScrollEvent
    _sfSensorEvent
    _sfSizeEvent
@@ -414,11 +443,12 @@ All rights reserved.
 (define (sfEvent-key e) (union-ref e 4))
 (define (sfEvent-mouseButton e) (union-ref e 5))
 (define (sfEvent-mouseMove e) (union-ref e 6))
-(define (sfEvent-mouseWheelScroll e) (union-ref e 7))
-(define (sfEvent-sensor e) (union-ref e 8))
-(define (sfEvent-size e) (union-ref e 9))
-(define (sfEvent-text e) (union-ref e 10))
-(define (sfEvent-touch e) (union-ref e 11))
+(define (sfEvent-mouseWheel e) (union-ref e 7))
+(define (sfEvent-mouseWheelScroll e) (union-ref e 8))
+(define (sfEvent-sensor e) (union-ref e 9))
+(define (sfEvent-size e) (union-ref e 10))
+(define (sfEvent-text e) (union-ref e 11))
+(define (sfEvent-touch e) (union-ref e 12))
 
 ;; ----------------------------------------------------
 ;; Window/Joystick.h
@@ -437,3 +467,9 @@ All rights reserved.
   ([width _uint]
    [height _uint]
    [bitsPerPixel _uint]))
+
+;; ----------------------------------------------------
+;; Window/WindowHandle.h
+;; ----------------------------------------------------
+
+(define _sfWindowHandle (make-ctype _uint64 #f #f))
