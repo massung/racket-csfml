@@ -375,38 +375,31 @@ All rights reserved.
 (define-cstruct _sfMouseButtonEvent
   ([type _sfEventType]
    [button _sfMouseButton]
-   [x _int]
-   [y _int]))
+   [position _sfVector2i]))
 
 (define-cstruct _sfMouseMoveEvent
   ([type _sfEventType]
-   [x _int]
-   [y _int]))
+   [position _sfVector2i]))
 
 (define-cstruct _sfMouseWheelEvent
   ([type _sfEventType]
    [delta _int]
-   [x _int]
-   [y _int]))
+   [position _sfVector2i]))
 
 (define-cstruct _sfMouseWheelScrollEvent
   ([type _sfEventType]
    [wheel _sfMouseWheel]
    [delta _float]
-   [x _int]
-   [y _int]))
+   [position _sfVector2i]))
 
 (define-cstruct _sfSensorEvent
   ([type _sfEventType]
    [sensorType _sfSensorType]
-   [x _float]
-   [y _float]
-   [z _float]))
+   [value _sfVector3f]))
 
 (define-cstruct _sfSizeEvent
   ([type _sfEventType]
-   [width _uint]
-   [height _uint]))
+   [size _sfVector2u]))
 
 (define-cstruct _sfTextEvent
   ([type _sfEventType]
@@ -415,8 +408,7 @@ All rights reserved.
 (define-cstruct _sfTouchEvent
   ([type _sfEventType]
    [finger _uint]
-   [x _int]
-   [y _int]))
+   [position _sfVector2i]))
 
 (define _sfEvent
   (_union

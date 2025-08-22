@@ -6,4 +6,4 @@
                             "libcsfml-network.2.6.1.dylib"
                             "libcsfml-system.2.6.1.dylib"
                             "libcsfml-window.2.6.1.dylib"
-                            "libsndfile.1.0.37.dylib"))
+                            "libsndfile.dylib"))

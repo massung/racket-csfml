@@ -8,6 +8,8 @@ Creating a shape and rendering it.
 
 (require "../main.rkt")
 
+(require ffi/unsafe)
+
 ;; create the main window
 (define mode (make-sfVideoMode 640 480 32))
 (define window (sfRenderWindow_create mode "Example" '(sfDefaultStyle) 'sfWindowed #f))
@@ -22,9 +24,8 @@ Creating a shape and rendering it.
 (sfCircleShape_setOrigin circle (make-sfVector2f 20.0 20.0))
 
 ;; convert x/y integer pair to vector in view space
-(define (map-pixel x y)
-  (let ([pos (make-sfVector2i x y)]
-        [view (sfRenderWindow_getView window)])
+(define (map-pixel pos)
+  (let ([view (sfRenderWindow_getView window)])
     (sfRenderWindow_mapPixelToCoords window pos view)))
 
 ;; move the circle to the mouse
@@ -34,8 +35,7 @@ Creating a shape and rendering it.
       (case (sfEvent-type event)
         ('sfEvtMouseMoved
          (let* ([move (sfEvent-mouseMove event)]
-                [pos (map-pixel (sfMouseMoveEvent-x move)
-                                (sfMouseMoveEvent-y move))])
+                [pos (map-pixel (sfMouseMoveEvent-position move))])
            (sfCircleShape_setPosition circle pos)))
         ('sfEvtKeyPressed
          (case (sfKeyEvent-code (sfEvent-key event))
